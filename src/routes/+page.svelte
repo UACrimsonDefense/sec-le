@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { Shape, Color, NewGame, GuessResult } from '#lib/types.js';
+	import type { Shape, Color, NewGame, GuessResult, SkipResult } from '#lib/types.js';
 
 	let termId = $state(0);
 	let shape = $state<Shape>([]);
@@ -8,7 +8,7 @@
 	let definition = $state('');
 	let guesses = $state<{ text: string; colors: Color[] }[]>([]);
 	let current = $state('');
-	let status = $state<'playing' | 'won' | 'lost'>('playing');
+	let status = $state<'playing' | 'won' | 'lost' | 'skipped'>('playing');
 	let answer = $state('');
 
 	let total = $derived(shape.reduce<number>((n, p) => (typeof p === 'number' ? n + p : n), 0));
@@ -38,6 +38,15 @@
 			answer = r.answer;
 			status = r.solved ? 'won' : 'lost';
 		}
+	}
+
+	async function skip() {
+		const res = await fetch('/api/game/skip', { method: 'POST', body: JSON.stringify({ termId }) });
+		if (!res.ok) return;
+		const r = (await res.json()) as SkipResult;
+		answer = r.answer;
+		definition = r.definition;
+		status = 'skipped';
 	}
 
 	function onkeydown(e: KeyboardEvent) {
@@ -83,8 +92,13 @@
 	</div>
 {/each}
 
-{#if status !== 'playing'}
-	<p>{status === 'won' ? 'You got it!' : 'Out of guesses.'} Answer: <b>{answer}</b></p>
+{#if status === 'playing'}
+	<button onclick={skip}>Skip</button>
+{:else}
+	<p>
+		{{ won: 'You got it!', lost: 'Out of guesses.', skipped: 'Skipped.' }[status]} Answer:
+		<b>{answer}</b>
+	</p>
 	<button onclick={start}>Play again</button>
 {/if}
 
