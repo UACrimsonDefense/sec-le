@@ -30,6 +30,7 @@
 			method: 'POST',
 			body: JSON.stringify({ termId, guess: current, guessNumber: guesses.length + 1 })
 		});
+		if (!res.ok) return;
 		const r = (await res.json()) as GuessResult;
 		guesses.push({ text: current, colors: r.colors });
 		current = '';
@@ -96,7 +97,7 @@
 	.tile {
 		width: 2rem;
 		height: 2rem;
-		border: 1px solid #999;
+		border: 1px solid var(--border);
 		display: grid;
 		place-items: center;
 		font-weight: bold;
@@ -106,15 +107,15 @@
 		width: 1rem;
 	}
 	.correct {
-		background: #6aaa64;
+		background: var(--green);
 		color: white;
 	}
 	.present {
-		background: #c9b458;
+		background: var(--yellow);
 		color: white;
 	}
 	.absent {
-		background: #787c7e;
+		background: var(--gray);
 		color: white;
 	}
 </style>

@@ -4,17 +4,30 @@ import { score } from '#lib/server/score.js';
 import type { GuessBody, GuessResult } from '#lib/types.js';
 
 export async function POST({ request }) {
-	const { termId, guess, guessNumber } = (await request.json()) as GuessBody;
+	if (Number(request.headers.get('content-length')) > 200) error(413, 'Too large');
+
+	const body = (await request.json().catch(() => null)) as Partial<GuessBody> | null;
+	const { termId, guess, guessNumber } = body ?? {};
+	if (
+		typeof termId !== 'number' ||
+		typeof guessNumber !== 'number' ||
+		typeof guess !== 'string' ||
+		!Number.isInteger(guessNumber) ||
+		guessNumber < 1 ||
+		guess.length > 40 ||
+		!/^[A-Z0-9.\/-]+$/.test(guess)
+	)
+		error(400, 'Bad request');
+
 	const t = terms.find((t) => t.id === termId);
 	if (!t) error(400, 'Unknown term');
 
 	const answer = letters(t.term);
-	if (typeof guess !== 'string' || !/^[A-Z0-9.\/-]+$/.test(guess) || guess.length !== answer.length)
-		error(400, 'Bad guess');
+	if (guess.length !== answer.length || guessNumber > maxGuesses(t.term)) error(400, 'Bad guess');
 
 	const colors = score(guess, answer);
 	const solved = guess === answer;
-	const over = solved || guessNumber >= maxGuesses(t.term);
+	const over = solved || guessNumber === maxGuesses(t.term);
 
 	return json({ colors, solved, answer: over ? t.term : null } satisfies GuessResult);
 }

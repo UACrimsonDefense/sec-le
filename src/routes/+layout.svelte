@@ -10,3 +10,12 @@
 </svelte:head>
 
 {@render children()}
+
+<style>
+	:global(:root) {
+		--green: #6aaa64;
+		--yellow: #c9b458;
+		--gray: #787c7e;
+		--border: #999;
+	}
+</style>
