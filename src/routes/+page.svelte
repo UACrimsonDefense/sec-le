@@ -12,6 +12,7 @@
 	let current = $state('');
 	let status = $state<'playing' | 'won' | 'lost' | 'skipped'>('playing');
 	let answer = $state('');
+	let message = $state('');
 	let waiting = false;
 
 	let total = $derived(countLetters(shape));
@@ -74,6 +75,10 @@
 			body: JSON.stringify({ termId, guess: current, guessNumber: guesses.length + 1 })
 		});
 		waiting = false;
+		if (res.status === 422) {
+			message = 'Not in word list';
+			return;
+		}
 		if (!res.ok) return;
 
 		const r = (await res.json()) as GuessResult;
@@ -97,6 +102,7 @@
 
 	function pressKey(key: string) {
 		if (status !== 'playing') return;
+		message = '';
 		if (key === 'ENTER') submit();
 		else if (key === 'BACK') removeLetter();
 		else addLetter(key);
@@ -119,6 +125,9 @@
 <main>
 	<h1>Sec+le</h1>
 	<p>{definition}</p>
+	{#if message}
+		<p><b>{message}</b></p>
+	{/if}
 
 	<Board {shape} {guesses} {current} {max} />
 

@@ -1,9 +1,10 @@
 import { json } from '@sveltejs/kit';
-import { terms, getShape, maxGuesses } from '#lib/server/terms.js';
+import { playable, getShape, maxGuesses } from '#lib/server/terms.js';
 import type { NewGame } from '#lib/types.js';
 
 export function GET() {
-	const t = terms[Math.floor(Math.random() * terms.length)];
+	const pool = playable();
+	const t = pool[Math.floor(Math.random() * pool.length)];
 	return json({
 		termId: t.id,
 		shape: getShape(t.term),

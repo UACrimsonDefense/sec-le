@@ -1,6 +1,7 @@
 import { json, error } from '@sveltejs/kit';
 import { terms, letters, maxGuesses } from '#lib/server/terms.js';
 import { score } from '#lib/server/score.js';
+import { isValidGuess } from '#lib/server/dictionary.js';
 import type { GuessBody, GuessResult } from '#lib/types.js';
 
 export async function POST({ request }) {
@@ -24,6 +25,7 @@ export async function POST({ request }) {
 
 	const answer = letters(t.term);
 	if (guess.length !== answer.length || guessNumber > maxGuesses(t.term)) error(400, 'Bad guess');
+	if (!isValidGuess(guess, t.term)) error(422, 'Not a word');
 
 	const colors = score(guess, answer);
 	const solved = guess === answer;
