@@ -2,15 +2,18 @@ import { json, error } from '@sveltejs/kit';
 import { terms, letters, maxGuesses, isDifficulty, unlockedHints } from '#lib/server/terms.js';
 import { score } from '#lib/server/score.js';
 import { isValidGuess } from '#lib/server/dictionary.js';
+import { isAllowedDate, dailyTerm } from '#lib/server/daily.js';
+import type { Term } from '#lib/server/terms.js';
 import type { GuessBody, GuessResult } from '#lib/types.js';
 
 export async function POST({ request }) {
 	if (Number(request.headers.get('content-length')) > 200) error(413, 'Too large');
 
 	const body = (await request.json().catch(() => null)) as Partial<GuessBody> | null;
-	const { termId, guess, guessNumber, difficulty } = body ?? {};
+	const { termId, date, guess, guessNumber, difficulty } = body ?? {};
 	if (
 		typeof termId !== 'number' ||
+		typeof date !== 'string' ||
 		typeof guessNumber !== 'number' ||
 		typeof guess !== 'string' ||
 		!isDifficulty(difficulty) ||
@@ -21,7 +24,13 @@ export async function POST({ request }) {
 	)
 		error(400, 'Bad request');
 
-	const t = terms.find((t) => t.id === termId);
+	let t: Term | undefined;
+	if (date !== '') {
+		if (!isAllowedDate(date)) error(400, 'Bad date');
+		t = dailyTerm(date);
+	} else {
+		t = terms.find((t) => t.id === termId);
+	}
 	if (!t) error(400, 'Unknown term');
 
 	const answer = letters(t.term);
@@ -35,6 +44,7 @@ export async function POST({ request }) {
 	return json({
 		colors,
 		solved,
+		termId: over ? t.id : null,
 		answer: over ? t.term : null,
 		objective: over ? t.objective : null,
 		hints: unlockedHints(t, difficulty, guessNumber, over)

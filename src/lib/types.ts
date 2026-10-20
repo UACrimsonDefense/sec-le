@@ -3,9 +3,16 @@ export type Color = 'correct' | 'present' | 'absent';
 export type Difficulty = 'easy' | 'medium' | 'hard';
 export type Hints = { category: string; definition: string };
 
-export type NewGame = { termId: number; shape: Shape; maxGuesses: number; hints: Hints };
+export type NewGame = {
+	termId: number;
+	day: number;
+	shape: Shape;
+	maxGuesses: number;
+	hints: Hints;
+};
 export type GuessBody = {
 	termId: number;
+	date: string;
 	guess: string;
 	guessNumber: number;
 	difficulty: Difficulty;
@@ -13,6 +20,7 @@ export type GuessBody = {
 export type GuessResult = {
 	colors: Color[];
 	solved: boolean;
+	termId: number | null;
 	answer: string | null;
 	objective: string | null;
 	hints: Hints;
@@ -23,6 +31,7 @@ export type Guess = { text: string; colors: Color[] };
 export type Result = 'won' | 'lost' | 'skipped';
 export type HistoryEntry = {
 	termId: number;
+	day: number;
 	objective: string;
 	difficulty: Difficulty;
 	result: Result;

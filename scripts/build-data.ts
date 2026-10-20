@@ -1,4 +1,5 @@
 import { readFileSync, writeFileSync, appendFileSync, existsSync } from 'node:fs';
+import { LAUNCH } from './launch.ts';
 
 type Row = Record<string, string>;
 
@@ -16,6 +17,8 @@ type Term = {
 
 const LOCK = 'data/ids.txt';
 const OUTPUT = 'src/lib/server/terms.json';
+
+const TODAY = new Date().toISOString().slice(0, 10);
 
 const errors: string[] = [];
 const warnings: string[] = [];
@@ -148,6 +151,9 @@ for (const row of readCsv('data/terms.csv')) {
 	const lockLine = `${row.id}|${row.term}|${row.added}`;
 	if (!lock.has(id)) {
 		newLockLines.push(lockLine);
+		if (TODAY >= LAUNCH && row.added <= TODAY) {
+			errors.push(`${where}: new terms need an added date after today`);
+		}
 	} else if (lock.get(id) !== lockLine) {
 		errors.push(`${where}: term or added date changed, lock has "${lock.get(id)}"`);
 	}

@@ -5,9 +5,9 @@
 	"version": "0.0.1",
 	"type": "module",
 	"scripts": {
-		"data": "node scripts/build-data.ts",
+		"data": "node scripts/build-data.ts && node --env-file-if-exists=.env.seed scripts/build-schedule.ts",
 		"dev": "pnpm data && vite dev",
-		"build": "pnpm data && wrangler types --check && vite build",
+		"build": "pnpm data --release && wrangler types --check && vite build",
 		"preview": "wrangler dev .svelte-kit/cloudflare/_worker.js --port 4173",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "pnpm data && wrangler types --check && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
