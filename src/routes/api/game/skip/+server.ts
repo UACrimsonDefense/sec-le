@@ -1,5 +1,5 @@
 import { json, error } from '@sveltejs/kit';
-import { terms } from '#lib/server/terms.js';
+import { terms, unlockedHints } from '#lib/server/terms.js';
 import type { SkipBody, SkipResult } from '#lib/types.js';
 
 export async function POST({ request }) {
@@ -12,5 +12,5 @@ export async function POST({ request }) {
 	const t = terms.find((t) => t.id === termId);
 	if (!t) error(400, 'Unknown term');
 
-	return json({ answer: t.term, definition: t.definition } satisfies SkipResult);
+	return json({ answer: t.term, hints: unlockedHints(t, 'easy', 0, true) } satisfies SkipResult);
 }
