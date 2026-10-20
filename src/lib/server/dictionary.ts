@@ -1,25 +1,35 @@
 import list from '#lib/server/words.txt?raw';
-import { terms, getShape } from '#lib/server/terms.js';
+import { terms } from '#lib/server/terms.js';
 
 const words = new Set<string>(list.split('\n'));
 for (const t of terms) {
-	for (const word of t.term.toUpperCase().split(' ')) {
-		words.add(word);
+	addRuns(t.term);
+	addRuns(t.acronym);
+}
+
+function addRuns(text: string) {
+	for (const run of text.toUpperCase().split(/[^A-Z]+/)) {
+		if (run !== '') words.add(run);
 	}
-	if (t.acronym !== '') words.add(t.acronym.toUpperCase());
 }
 
-function isWord(word: string): boolean {
-	if (!/[A-Z]/.test(word)) return true;
-	return words.has(word);
+function isChain(run: string): boolean {
+	const ok: boolean[] = [true];
+	for (let end = 1; end <= run.length; end++) {
+		ok[end] = false;
+		for (let start = 0; start < end; start++) {
+			if (ok[start] && words.has(run.slice(start, end))) {
+				ok[end] = true;
+				break;
+			}
+		}
+	}
+	return ok[run.length];
 }
 
-export function isValidGuess(guess: string, term: string): boolean {
-	let start = 0;
-	for (const part of getShape(term)) {
-		if (part === ' ') continue;
-		if (!isWord(guess.slice(start, start + part))) return false;
-		start += part;
+export function isValidGuess(guess: string): boolean {
+	for (const run of guess.split(/[^A-Z]+/)) {
+		if (run !== '' && !isChain(run)) return false;
 	}
 	return true;
 }

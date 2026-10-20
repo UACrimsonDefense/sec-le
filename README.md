@@ -1,54 +1,37 @@
-# sv
+# Sec+le
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
-
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```sh
-# create a new project
-npx sv create my-app
-```
-
-To recreate this project with the same configuration:
-
-```sh
-# recreate this project
-pnpm dlx sv@1.1.1 create --template minimal --types ts --add prettier sveltekit-adapter="adapter:cloudflare+cfTarget:workers" --install pnpm .
-```
-
-## Adding features
-
-Add features to your project with `sv add`:
-
-```sh
-npx sv add
-```
-
-For example, to add Tailwind CSS:
-
-```sh
-npx sv add tailwindcss
-```
+Wordle for CompTIA Security+ (SY0-701) terms. Guess the term on the tiles, get hints based on your difficulty, and find out which exam domains you need to study.
 
 ## Developing
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+Needs [Nix](https://nixos.org) with flakes, which provides Node 24 and pnpm. With [nix-direnv](https://github.com/nix-community/nix-direnv), run `direnv allow` once and the shell loads automatically. Otherwise, run `nix develop` first.
+
+Install dependencies and start a development server:
 
 ```sh
-npm run dev
+pnpm install
+pnpm dev      # http://localhost:5173
+```
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+Before committing:
+
+```sh
+pnpm format   # fix formatting
+pnpm check    # type check
 ```
 
 ## Building
 
-To create a production version of your app:
+To create a production build:
 
 ```sh
-npm run build
+pnpm build
 ```
 
-You can preview the production build with `npm run preview`.
+You can preview the production build with `pnpm preview`.
+
+## Credits and disclaimers
+
+- Code is [MIT](LICENSE). The dictionary in `src/lib/server/words.txt` is from [SCOWL / ESDB](https://wordlist.aspell.net) by Kevin Atkinson, under its own license in [`scowl-license.txt`](src/lib/server/scowl-license.txt).
+- Not affiliated with or endorsed by CompTIA. CompTIA and Security+ are registered trademarks of CompTIA, Inc.
+- Not affiliated with The New York Times. Wordle is a trademark of The New York Times Company.

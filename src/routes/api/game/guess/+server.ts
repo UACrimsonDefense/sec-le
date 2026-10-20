@@ -26,7 +26,7 @@ export async function POST({ request }) {
 
 	const answer = letters(t.term);
 	if (guess.length !== answer.length || guessNumber > maxGuesses(t.term)) error(400, 'Bad guess');
-	if (!isValidGuess(guess, t.term)) error(422, 'Not a word');
+	if (!isValidGuess(guess)) error(422, 'Not a word');
 
 	const colors = score(guess, answer);
 	const solved = guess === answer;
@@ -36,6 +36,7 @@ export async function POST({ request }) {
 		colors,
 		solved,
 		answer: over ? t.term : null,
+		objective: over ? t.objective : null,
 		hints: unlockedHints(t, difficulty, guessNumber, over)
 	} satisfies GuessResult);
 }

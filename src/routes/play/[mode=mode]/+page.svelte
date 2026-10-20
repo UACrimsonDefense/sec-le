@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { page } from '$app/state';
+	import { replaceState } from '$app/navigation';
 	import type {
 		Shape,
 		Color,
@@ -8,32 +10,44 @@
 		Hints,
 		NewGame,
 		GuessResult,
-		SkipResult
+		SkipResult,
+		Result,
+		HistoryEntry
 	} from '#lib/types.js';
 	import Board from '#lib/components/Board.svelte';
 	import Keyboard from '#lib/components/Keyboard.svelte';
 	import HintPanel from '#lib/components/HintPanel.svelte';
 	import Modal from '#lib/components/Modal.svelte';
 
-	type Status = 'loading' | 'playing' | 'won' | 'lost' | 'skipped';
+	type Status = 'loading' | 'playing' | Result;
 	type Level = { value: Difficulty; name: string; about: string };
+	type Domain = { value: string; name: string };
 	type SavedGame = {
 		termId: number;
 		shape: Shape;
 		max: number;
 		difficulty: Difficulty;
+		domain: string;
 		hints: Hints;
 		guesses: Guess[];
 		status: Status;
 		answer: string;
 	};
 
-	const SAVE_KEY = 'play-term-current';
+	const SAVE_KEY = `play-${page.params.mode}-current`;
 	const REPO = 'https://github.com/UACrimsonDefense/sec-le';
 	const levels: Level[] = [
 		{ value: 'easy', name: 'Easy', about: 'Definition from the start' },
 		{ value: 'medium', name: 'Medium', about: 'Hints unlock as you guess' },
 		{ value: 'hard', name: 'Hard', about: 'No hints' }
+	];
+	const domains: Domain[] = [
+		{ value: '', name: 'All domains' },
+		{ value: '1', name: '1. General concepts' },
+		{ value: '2', name: '2. Threats' },
+		{ value: '3', name: '3. Architecture' },
+		{ value: '4', name: '4. Operations' },
+		{ value: '5', name: '5. Program management' }
 	];
 
 	let termId = $state(0);
@@ -41,6 +55,8 @@
 	let max = $state(0);
 	let difficulty = $state<Difficulty>('medium');
 	let preferred = $state<Difficulty>('medium');
+	let gameDomain = $state('');
+	let domain = $state('');
 	let hints = $state<Hints>({ category: '', definition: '' });
 	let guesses = $state<Guess[]>([]);
 	let current = $state('');
@@ -80,15 +96,18 @@
 		return result;
 	}
 
-	function levelName(value: Difficulty): string {
-		for (const level of levels) {
-			if (level.value === value) return level.name;
-		}
-		return '';
-	}
-
 	function save() {
-		const game: SavedGame = { termId, shape, max, difficulty, hints, guesses, status, answer };
+		const game: SavedGame = {
+			termId,
+			shape,
+			max,
+			difficulty,
+			domain: gameDomain,
+			hints,
+			guesses,
+			status,
+			answer
+		};
 		try {
 			localStorage.setItem(SAVE_KEY, JSON.stringify(game));
 		} catch {}
@@ -103,6 +122,7 @@
 			shape = game.shape;
 			max = game.max;
 			difficulty = game.difficulty;
+			gameDomain = game.domain ?? '';
 			hints = game.hints;
 			guesses = game.guesses;
 			status = game.status;
@@ -143,13 +163,49 @@
 		(e.currentTarget as HTMLSelectElement).blur();
 	}
 
+	function loadDomain() {
+		const param = new URL(window.location.href).searchParams.get('domain');
+		if (param && /^[1-5]$/.test(param)) domain = param;
+	}
+
+	function changeDomain(e: Event) {
+		const url = new URL(window.location.href);
+		if (domain === '') url.searchParams.delete('domain');
+		else url.searchParams.set('domain', domain);
+		replaceState(url, {});
+		(e.currentTarget as HTMLSelectElement).blur();
+	}
+
+	function record(objective: string) {
+		const entry: HistoryEntry = {
+			termId,
+			objective,
+			difficulty,
+			result: status as Result,
+			guesses: guesses.length,
+			date: new Date().toISOString()
+		};
+		try {
+			let history: HistoryEntry[] = [];
+			const text = localStorage.getItem('history');
+			if (text) history = JSON.parse(text) as HistoryEntry[];
+			history.push(entry);
+			localStorage.setItem('history', JSON.stringify(history));
+		} catch {}
+	}
+
 	async function start() {
-		const res = await fetch(`/api/game/new?difficulty=${preferred}`);
+		let url = `/api/game/new?difficulty=${preferred}`;
+		if (domain !== '') url += `&domain=${domain}`;
+		if (termId !== 0) url += `&last=${termId}`;
+		const res = await fetch(url);
+		if (!res.ok) return;
 		const g = (await res.json()) as NewGame;
 		termId = g.termId;
 		shape = g.shape;
 		max = g.maxGuesses;
 		difficulty = preferred;
+		gameDomain = domain;
 		hints = g.hints;
 		guesses = [];
 		current = '';
@@ -193,18 +249,23 @@
 			if (r.solved) status = 'won';
 			else status = 'lost';
 			showResult = true;
+			record(r.objective ?? '');
 		}
 		save();
 	}
 
 	async function skip() {
+		if (waiting) return;
+		waiting = true;
 		const res = await fetch('/api/game/skip', { method: 'POST', body: JSON.stringify({ termId }) });
+		waiting = false;
 		if (!res.ok) return;
 		const r = (await res.json()) as SkipResult;
 		answer = r.answer;
 		hints = r.hints;
 		status = 'skipped';
 		showResult = true;
+		record(r.objective);
 		save();
 	}
 
@@ -243,6 +304,7 @@
 
 	onMount(() => {
 		const hasPreferred = loadPreferred();
+		loadDomain();
 		if (loadGame()) return;
 		if (hasPreferred) start();
 		else choosing = true;
@@ -251,22 +313,23 @@
 
 <svelte:window {onkeydown} />
 
-<select
-	class="difficulty"
-	aria-label="Difficulty"
-	bind:value={preferred}
-	onchange={changeDifficulty}
->
-	{#each levels as level}
-		<option value={level.value}>{level.name}</option>
-	{/each}
-</select>
-
 <main>
 	<h1>Sec+le</h1>
+	<div class="filters">
+		<select aria-label="Difficulty" bind:value={preferred} onchange={changeDifficulty}>
+			{#each levels as level}
+				<option value={level.value}>{level.name}</option>
+			{/each}
+		</select>
+		<select aria-label="Domain" bind:value={domain} onchange={changeDomain}>
+			{#each domains as d}
+				<option value={d.value}>{d.name}</option>
+			{/each}
+		</select>
+	</div>
 	<HintPanel {hints} />
-	{#if status === 'playing' && preferred !== difficulty}
-		<p class="note">{levelName(preferred)} starts next game</p>
+	{#if status === 'playing' && (preferred !== difficulty || domain !== gameDomain)}
+		<p class="note">Changes start next game</p>
 	{/if}
 	{#if message}
 		<p><b>{message}</b></p>
@@ -307,6 +370,8 @@
 
 <style>
 	main {
+		box-sizing: border-box;
+		width: 100%;
 		max-width: 500px;
 		margin: 0 auto;
 		padding: 0 16px 16px;
@@ -353,10 +418,13 @@
 		color: var(--text);
 		font-size: 0.85rem;
 	}
-	.difficulty {
-		position: absolute;
-		top: 12px;
-		left: 16px;
+	.filters {
+		display: flex;
+		justify-content: center;
+		gap: 8px;
+		margin-bottom: 8px;
+	}
+	select {
 		font: inherit;
 		background: var(--bg);
 		color: var(--text);

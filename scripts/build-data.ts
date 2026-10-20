@@ -7,6 +7,7 @@ type Term = {
 	term: string;
 	acronym: string;
 	definition: string;
+	objective: string;
 	domain: number;
 	category: string;
 	added: string;
@@ -164,6 +165,7 @@ for (const row of readCsv('data/terms.csv')) {
 		term: row.term,
 		acronym: row.acronym,
 		definition: row.definition,
+		objective: row.objective,
 		domain: Number(row.objective.split('.')[0]),
 		category: categories.get(row.objective) ?? '',
 		added: row.added,

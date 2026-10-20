@@ -6,6 +6,7 @@ export type Term = {
 	term: string;
 	acronym: string;
 	definition: string;
+	objective: string;
 	domain: number;
 	category: string;
 	added: string;

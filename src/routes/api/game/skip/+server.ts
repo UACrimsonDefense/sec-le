@@ -12,5 +12,9 @@ export async function POST({ request }) {
 	const t = terms.find((t) => t.id === termId);
 	if (!t) error(400, 'Unknown term');
 
-	return json({ answer: t.term, hints: unlockedHints(t, 'easy', 0, true) } satisfies SkipResult);
+	return json({
+		answer: t.term,
+		objective: t.objective,
+		hints: unlockedHints(t, 'easy', 0, true)
+	} satisfies SkipResult);
 }
