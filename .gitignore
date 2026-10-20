@@ -27,3 +27,6 @@ vite.config.ts.timestamp-*
 .omh
 # Generated
 /src/lib/server/terms.json
+
+# direnv
+.direnv
