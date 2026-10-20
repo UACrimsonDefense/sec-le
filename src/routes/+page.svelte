@@ -1,20 +1,51 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { Shape, Color, NewGame, GuessResult, SkipResult } from '#lib/types.js';
+	import type { Shape, Color, Guess, NewGame, GuessResult, SkipResult } from '#lib/types.js';
+	import Board from '#lib/components/Board.svelte';
+	import Keyboard from '#lib/components/Keyboard.svelte';
 
 	let termId = $state(0);
 	let shape = $state<Shape>([]);
 	let max = $state(0);
 	let definition = $state('');
-	let guesses = $state<{ text: string; colors: Color[] }[]>([]);
+	let guesses = $state<Guess[]>([]);
 	let current = $state('');
 	let status = $state<'playing' | 'won' | 'lost' | 'skipped'>('playing');
 	let answer = $state('');
+	let waiting = false;
 
-	let total = $derived(shape.reduce<number>((n, p) => (typeof p === 'number' ? n + p : n), 0));
+	let total = $derived(countLetters(shape));
+	let keyColors = $derived(getKeyColors(guesses));
+
+	function countLetters(shape: Shape): number {
+		let count = 0;
+		for (const part of shape) {
+			if (part !== ' ') count += part;
+		}
+		return count;
+	}
+
+	function getKeyColors(guesses: Guess[]): Record<string, Color> {
+		const result: Record<string, Color> = {};
+		for (const guess of guesses) {
+			for (let i = 0; i < guess.text.length; i++) {
+				const letter = guess.text[i];
+				const color = guess.colors[i];
+				if (color === 'correct') {
+					result[letter] = 'correct';
+				} else if (color === 'present' && result[letter] !== 'correct') {
+					result[letter] = 'present';
+				} else if (color === 'absent' && result[letter] === undefined) {
+					result[letter] = 'absent';
+				}
+			}
+		}
+		return result;
+	}
 
 	async function start() {
-		const g = (await (await fetch('/api/game/new')).json()) as NewGame;
+		const res = await fetch('/api/game/new');
+		const g = (await res.json()) as NewGame;
 		termId = g.termId;
 		shape = g.shape;
 		max = g.maxGuesses;
@@ -25,18 +56,33 @@
 		answer = '';
 	}
 
+	function addLetter(letter: string) {
+		if (current.length < total) current += letter;
+	}
+
+	function removeLetter() {
+		current = current.slice(0, -1);
+	}
+
 	async function submit() {
+		if (waiting) return;
+		if (current.length !== total) return;
+
+		waiting = true;
 		const res = await fetch('/api/game/guess', {
 			method: 'POST',
 			body: JSON.stringify({ termId, guess: current, guessNumber: guesses.length + 1 })
 		});
+		waiting = false;
 		if (!res.ok) return;
+
 		const r = (await res.json()) as GuessResult;
 		guesses.push({ text: current, colors: r.colors });
 		current = '';
 		if (r.answer) {
 			answer = r.answer;
-			status = r.solved ? 'won' : 'lost';
+			if (r.solved) status = 'won';
+			else status = 'lost';
 		}
 	}
 
@@ -49,31 +95,20 @@
 		status = 'skipped';
 	}
 
-	function onkeydown(e: KeyboardEvent) {
+	function pressKey(key: string) {
 		if (status !== 'playing') return;
+		if (key === 'ENTER') submit();
+		else if (key === 'BACK') removeLetter();
+		else addLetter(key);
+	}
+
+	function onkeydown(e: KeyboardEvent) {
+		if (e.ctrlKey || e.metaKey || e.altKey) return;
+		if (e.target instanceof HTMLSelectElement) return;
 		const key = e.key.toUpperCase();
-		if (key === 'ENTER' && current.length === total) submit();
-		else if (key === 'BACKSPACE') current = current.slice(0, -1);
-		else if (/^[A-Z0-9.\/-]$/.test(key) && current.length < total) current += key;
-	}
-
-	function cells(text: string, colors: Color[] = []) {
-		const out: { ch: string; cls: string }[] = [];
-		let i = 0;
-		for (const part of shape) {
-			if (part === ' ') {
-				out.push({ ch: '', cls: 'gap' });
-				continue;
-			}
-			for (let k = 0; k < part; k++, i++) out.push({ ch: text[i] ?? '', cls: colors[i] ?? '' });
-		}
-		return out;
-	}
-
-	function row(r: number) {
-		if (r < guesses.length) return cells(guesses[r].text, guesses[r].colors);
-		if (r === guesses.length) return cells(current);
-		return cells('');
+		if (key === 'ENTER') pressKey('ENTER');
+		else if (key === 'BACKSPACE') pressKey('BACK');
+		else if (/^[A-Z0-9.\/-]$/.test(key)) pressKey(key);
 	}
 
 	onMount(start);
@@ -81,55 +116,53 @@
 
 <svelte:window {onkeydown} />
 
-<h1>Sec+le</h1>
-<p>{definition}</p>
+<main>
+	<h1>Sec+le</h1>
+	<p>{definition}</p>
 
-{#each { length: max }, r}
-	<div class="row">
-		{#each row(r) as c}
-			<span class="tile {c.cls}">{c.ch}</span>
-		{/each}
-	</div>
-{/each}
+	<Board {shape} {guesses} {current} {max} />
 
-{#if status === 'playing'}
-	<button onclick={skip}>Skip</button>
-{:else}
-	<p>
-		{{ won: 'You got it!', lost: 'Out of guesses.', skipped: 'Skipped.' }[status]} Answer:
-		<b>{answer}</b>
-	</p>
-	<button onclick={start}>Play again</button>
-{/if}
+	{#if status === 'playing'}
+		<button class="skip" onclick={skip}>Skip</button>
+	{:else}
+		<p>
+			{#if status === 'won'}
+				You got it!
+			{:else if status === 'lost'}
+				Out of guesses.
+			{:else}
+				Skipped.
+			{/if}
+			Answer: <b>{answer}</b>
+		</p>
+		<button class="play-again" onclick={start}>Play again</button>
+	{/if}
+
+	<Keyboard colors={keyColors} onkey={pressKey} />
+</main>
 
 <style>
-	.row {
-		display: flex;
-		gap: 4px;
-		margin: 4px 0;
+	main {
+		max-width: 500px;
+		margin: 0 auto;
+		padding: 0 16px 16px;
+		text-align: center;
 	}
-	.tile {
-		width: 2rem;
-		height: 2rem;
-		border: 1px solid var(--border);
-		display: grid;
-		place-items: center;
+	button {
+		margin-bottom: 1rem;
+		font: inherit;
 		font-weight: bold;
-	}
-	.gap {
+		padding: 8px 20px;
 		border: none;
-		width: 1rem;
+		border-radius: 4px;
+		cursor: pointer;
 	}
-	.correct {
+	.skip {
+		background: var(--key);
+		color: var(--text);
+	}
+	.play-again {
 		background: var(--green);
-		color: white;
-	}
-	.present {
-		background: var(--yellow);
-		color: white;
-	}
-	.absent {
-		background: var(--gray);
 		color: white;
 	}
 </style>
