@@ -7,11 +7,6 @@
 
 <div class="tile {color}" class:filled={letter !== '' && color === ''}>
 	{letter}
-	{#if color === 'correct'}
-		<span class="mark">✓</span>
-	{:else if color === 'present'}
-		<span class="mark">•</span>
-	{/if}
 </div>
 
 <style>
@@ -26,13 +21,6 @@
 		font-weight: bold;
 		font-size: calc(var(--size) * 0.55);
 	}
-	.mark {
-		position: absolute;
-		top: 0;
-		right: 2px;
-		font-size: calc(var(--size) * 0.3);
-		line-height: 1;
-	}
 	.filled {
 		border-color: var(--filled);
 	}
@@ -46,9 +34,18 @@
 		border-color: var(--yellow);
 		color: var(--on-yellow);
 	}
+	.present::after {
+		content: '';
+		position: absolute;
+		left: 50%;
+		bottom: calc(var(--size) * 0.1);
+		width: calc(var(--size) * 0.4);
+		height: max(2px, calc(var(--size) * 0.07));
+		border-radius: 1px;
+		background: currentColor;
+		transform: translateX(-50%);
+	}
 	.absent {
-		background: var(--gray);
-		border-color: var(--gray);
-		color: white;
+		color: var(--muted);
 	}
 </style>

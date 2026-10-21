@@ -39,6 +39,7 @@
 </svelte:head>
 
 <header>
+	<a href="/stats">Stats</a>
 	<select aria-label="Theme" bind:value={theme} onchange={changeTheme}>
 		<option value="light">Light</option>
 		<option value="dark">Dark</option>
@@ -52,6 +53,12 @@
 	<p>
 		Made with ❤️ by <a href="https://github.com/SamuelBozeman">Samuel Bozeman</a> for
 		<a href="https://crimsondefense.org">Crimson Defense</a> and every future Sec+ holder
+	</p>
+	<p class="a11y">
+		We are committed to making this website accessible to all users in accordance with WCAG 2.1
+		Level AA. If you encounter any accessibility issues, please
+		<a href="https://github.com/UACrimsonDefense/sec-le/issues/new">create a GitHub issue</a> or
+		email us at <a href="mailto:crimsoncyberdefense@gmail.com">crimsoncyberdefense@gmail.com</a>.
 	</p>
 	<a class="repo" href="https://github.com/UACrimsonDefense/sec-le" aria-label="Source on GitHub">
 		<svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true">
@@ -95,7 +102,7 @@
 	:global(:root[data-theme='crimson']) {
 		--bg: #1a1a1a;
 		--text: #f2f2f2;
-		--green: #a3202f;
+		--green: #c92c3d;
 		--yellow: #c9a227;
 		--on-yellow: #1a1a1a;
 		--gray: #3a3a3a;
@@ -141,6 +148,10 @@
 	footer p {
 		margin: 0;
 	}
+	.a11y {
+		max-width: 600px;
+		margin: 8px auto 0;
+	}
 	footer a {
 		color: inherit;
 	}
@@ -154,7 +165,12 @@
 	header {
 		display: flex;
 		justify-content: flex-end;
+		align-items: center;
+		gap: 16px;
 		padding: 12px 16px 0;
+	}
+	header a {
+		color: var(--text);
 	}
 	select {
 		font: inherit;

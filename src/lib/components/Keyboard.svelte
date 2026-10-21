@@ -43,11 +43,6 @@
 					onclick={() => onkey(key)}
 				>
 					{label(key)}
-					{#if colors[key] === 'correct'}
-						<span class="mark" aria-hidden="true">✓</span>
-					{:else if colors[key] === 'present'}
-						<span class="mark" aria-hidden="true">•</span>
-					{/if}
 				</button>
 			{/each}
 		</div>
@@ -94,20 +89,25 @@
 		flex-basis: 4rem;
 		font-size: 0.75rem;
 	}
-	.mark {
-		position: absolute;
-		top: 2px;
-		right: 3px;
-		font-size: 0.7rem;
-		line-height: 1;
-	}
 	.correct {
 		background: var(--green);
 		color: white;
+		box-shadow: inset 0 0 0 3px white;
 	}
 	.present {
 		background: var(--yellow);
 		color: var(--on-yellow);
+	}
+	.present::after {
+		content: '';
+		position: absolute;
+		left: 50%;
+		bottom: 8px;
+		width: 1rem;
+		height: 3px;
+		border-radius: 1px;
+		background: currentColor;
+		transform: translateX(-50%);
 	}
 	.absent {
 		background: var(--gray);
