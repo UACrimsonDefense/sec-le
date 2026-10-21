@@ -11,6 +11,8 @@ import { isAllowedDate, dailyTerm, dayNumber } from '#lib/server/daily.js';
 import type { Term } from '#lib/server/terms.js';
 import type { Mode, Difficulty, NewGame } from '#lib/types.js';
 
+export const prerender = false;
+
 function pick(pool: Term[]): Term {
 	return pool[Math.floor(Math.random() * pool.length)];
 }

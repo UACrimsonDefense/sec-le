@@ -13,6 +13,8 @@ import { isAllowedDate, dailyTerm } from '#lib/server/daily.js';
 import type { Term } from '#lib/server/terms.js';
 import type { GuessBody, GuessResult } from '#lib/types.js';
 
+export const prerender = false;
+
 export async function POST({ request }) {
 	if (Number(request.headers.get('content-length')) > 200) error(413, 'Too large');
 

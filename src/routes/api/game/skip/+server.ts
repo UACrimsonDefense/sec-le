@@ -2,6 +2,8 @@ import { json, error } from '@sveltejs/kit';
 import { terms, unlockedHints } from '#lib/server/terms.js';
 import type { SkipBody, SkipResult } from '#lib/types.js';
 
+export const prerender = false;
+
 export async function POST({ request }) {
 	if (Number(request.headers.get('content-length')) > 100) error(413, 'Too large');
 
