@@ -8,14 +8,14 @@
 	"scripts": {
 		"data": "node scripts/build-data.ts && node --env-file-if-exists=.env.seed scripts/build-schedule.ts",
 		"dev": "pnpm data && vite dev",
-		"build": "pnpm data --release && wrangler types --check && vite build",
+		"build": "pnpm data --release && CLOUDFLARE_INCLUDE_PROCESS_ENV=false wrangler types --check && vite build",
 		"preview": "wrangler dev .svelte-kit/cloudflare/_worker.js --port 4173",
 		"prepare": "svelte-kit sync || echo ''",
-		"check": "pnpm data && wrangler types --check && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && tsc -p scripts",
+		"check": "pnpm data && CLOUDFLARE_INCLUDE_PROCESS_ENV=false wrangler types --check && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && tsc -p scripts",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --check .",
 		"format": "prettier --write .",
-		"gen": "wrangler types"
+		"gen": "CLOUDFLARE_INCLUDE_PROCESS_ENV=false wrangler types"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-cloudflare": "^8.0.0",
