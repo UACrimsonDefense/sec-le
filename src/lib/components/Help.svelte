@@ -21,7 +21,11 @@
 				</li>
 				<li>
 					<span class="tile" aria-hidden="true"><Tile letter="E" color="present" /></span>
-					<span><b>Bar:</b> in the answer, wrong spot</span>
+					<span><b>Bar under:</b> in this word, wrong spot</span>
+				</li>
+				<li>
+					<span class="tile" aria-hidden="true"><Tile letter="A" color="elsewhere" /></span>
+					<span><b>Bar over:</b> in the answer, but in another word</span>
 				</li>
 				<li>
 					<span class="tile" aria-hidden="true"><Tile letter="C" color="absent" /></span>

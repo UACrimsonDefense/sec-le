@@ -89,6 +89,7 @@
 	function colorName(color: Color): string {
 		if (color === 'correct') return 'correct';
 		if (color === 'present') return 'wrong spot';
+		if (color === 'elsewhere') return 'in another word';
 		return 'not in answer';
 	}
 

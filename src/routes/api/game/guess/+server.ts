@@ -47,7 +47,7 @@ export async function POST({ request }) {
 	if (guess.length !== answer.length || guessNumber > maxGuesses(t.term)) error(400, 'Bad guess');
 	if (!isValidGuess(guess)) error(422, 'Not a word');
 
-	const colors = score(guess, answer);
+	const colors = score(guess, t.term);
 	const solved = guess === answer;
 	const over = solved || guessNumber === maxGuesses(t.term);
 

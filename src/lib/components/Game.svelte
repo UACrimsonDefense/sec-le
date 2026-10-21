@@ -118,6 +118,11 @@
 					result[letter] = 'correct';
 				} else if (color === 'present' && result[letter] !== 'correct') {
 					result[letter] = 'present';
+				} else if (
+					color === 'elsewhere' &&
+					(result[letter] === undefined || result[letter] === 'absent')
+				) {
+					result[letter] = 'elsewhere';
 				} else if (color === 'absent' && result[letter] === undefined) {
 					result[letter] = 'absent';
 				}
@@ -354,6 +359,7 @@
 		const colorblind = document.documentElement.dataset.colorblind !== undefined;
 		if (color === 'correct') return colorblind ? '🟦' : '🟩';
 		if (color === 'present') return '🟨';
+		if (color === 'elsewhere') return '🟪';
 		return '⬛';
 	}
 

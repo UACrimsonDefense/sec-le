@@ -34,7 +34,13 @@
 		border-color: var(--yellow);
 		color: var(--on-yellow);
 	}
-	.present::after {
+	.elsewhere {
+		background: var(--purple);
+		border-color: var(--purple);
+		color: var(--on-purple);
+	}
+	.present::after,
+	.elsewhere::after {
 		content: '';
 		position: absolute;
 		left: 50%;
@@ -44,6 +50,10 @@
 		border-radius: 1px;
 		background: currentColor;
 		transform: translateX(-50%);
+	}
+	.elsewhere::after {
+		top: calc(var(--size) * 0.1);
+		bottom: auto;
 	}
 	.absent {
 		color: var(--muted);

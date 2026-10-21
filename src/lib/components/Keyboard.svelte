@@ -26,6 +26,7 @@
 		const color = colors[key];
 		if (color === 'correct') result += ', correct';
 		if (color === 'present') result += ', wrong spot';
+		if (color === 'elsewhere') result += ', in another word';
 		if (color === 'absent') result += ', not in answer';
 		return result;
 	}
@@ -98,7 +99,12 @@
 		background: var(--yellow);
 		color: var(--on-yellow);
 	}
-	.present::after {
+	.elsewhere {
+		background: var(--purple);
+		color: var(--on-purple);
+	}
+	.present::after,
+	.elsewhere::after {
 		content: '';
 		position: absolute;
 		left: 50%;
@@ -108,6 +114,10 @@
 		border-radius: 1px;
 		background: currentColor;
 		transform: translateX(-50%);
+	}
+	.elsewhere::after {
+		top: 8px;
+		bottom: auto;
 	}
 	.absent {
 		background: var(--gray);

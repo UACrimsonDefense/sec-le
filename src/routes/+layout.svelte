@@ -67,6 +67,8 @@
 		--green: #2f7d32;
 		--yellow: #c9b458;
 		--on-yellow: #1a1a1b;
+		--purple: #a23cb8;
+		--on-purple: #ffffff;
 		--gray: #6b6e70;
 		--border: #8e9194;
 		--filled: #565758;
@@ -107,6 +109,8 @@
 	:global(:root[data-colorblind]) {
 		--green: #0072b2;
 		--yellow: #f0e442;
+		--purple: #cc79a7;
+		--on-purple: #1a1a1b;
 	}
 	:global(body) {
 		display: flex;

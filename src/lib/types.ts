@@ -1,5 +1,5 @@
 export type Shape = (number | ' ')[];
-export type Color = 'correct' | 'present' | 'absent';
+export type Color = 'correct' | 'present' | 'elsewhere' | 'absent';
 export type Mode = 'term' | 'acronym';
 export type Difficulty = 'easy' | 'medium' | 'hard';
 export type Hints = { acronym: string; category: string; definition: string };
