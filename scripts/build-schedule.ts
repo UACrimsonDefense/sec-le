@@ -17,6 +17,12 @@ if (seed === '') {
 	console.warn('warning: DAILY_SEED is not set, using a dev seed');
 	seed = 'dev';
 }
+if (!/^[A-Za-z0-9_-]+$/.test(seed)) {
+	console.error(
+		'error: DAILY_SEED has unexpected characters. Paste only the value, without DAILY_SEED= or quotes'
+	);
+	process.exit(1);
+}
 
 function addDays(date: string, days: number): string {
 	const d = new Date(date + 'T00:00:00Z');
