@@ -132,9 +132,10 @@
 	}
 
 	function pageTitle(daily: boolean, mode: Mode): string {
-		let kind = 'Unlimited';
-		if (daily) kind = 'Daily';
-		return `${kind} ${mode} · Sec+le`;
+		let name = 'Term';
+		if (mode === 'acronym') name = 'Acronym';
+		if (daily) return `Daily Security+ ${name} Puzzle · Sec+le`;
+		return `Unlimited Security+ ${name} Practice · Sec+le`;
 	}
 
 	function levelName(value: Difficulty): string {
@@ -467,6 +468,7 @@
 
 <main>
 	<h1>Sec+le</h1>
+	<p class="tagline">A daily word game for CompTIA Security+ (SY0-701) terms</p>
 	<div class="navs">
 		<nav aria-label="Game type">
 			<a href="/daily/{mode}" class:current={daily} aria-current={daily ? 'page' : undefined}
@@ -572,6 +574,14 @@
 		font-size: 1rem;
 		font-weight: bold;
 		text-decoration: none;
+	}
+	h1 {
+		margin-bottom: 0;
+	}
+	.tagline {
+		margin: 4px 0 16px;
+		font-size: 0.9rem;
+		color: var(--muted);
 	}
 	.navs {
 		display: flex;

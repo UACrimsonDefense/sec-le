@@ -82,6 +82,7 @@
 		for (const part of shape) {
 			if (part !== ' ') words.push(part);
 		}
+		if (words.length === 0) return '';
 		if (words.length === 1) return `1 word, ${words[0]} letters, ${max} guesses`;
 		return `${words.length} words of ${words.join(', ')} letters, ${max} guesses`;
 	}

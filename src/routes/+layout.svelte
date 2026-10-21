@@ -1,22 +1,34 @@
 <script lang="ts">
-	import favicon from '#lib/assets/favicon.svg';
+	import { page } from '$app/state';
 	import Help from '#lib/components/Help.svelte';
 	import Settings from '#lib/components/Settings.svelte';
 	import type { LayoutProps } from './$types';
 
 	let { children }: LayoutProps = $props();
 
+	const SITE = 'https://secle.crimsondefense.org';
 	const description =
-		'A daily word-guessing game for Security+ (SY0-701) terms. Guess the term, unlock hints and find your weak exam domains.';
+		'Free daily word game for CompTIA Security+ (SY0-701). Guess security terms and acronyms, unlock hints and find your weak exam domains.';
 </script>
 
 <svelte:head>
 	<meta name="description" content={description} />
-	<meta property="og:title" content="Sec+le" />
+	<link rel="canonical" href={SITE + page.url.pathname} />
+	<meta property="og:site_name" content="Sec+le" />
+	<meta property="og:title" content="Sec+le · Daily Security+ word game" />
 	<meta property="og:description" content={description} />
 	<meta property="og:type" content="website" />
-	<meta property="og:url" content="https://secle.crimsondefense.org" />
-	<link rel="icon" href={favicon} />
+	<meta property="og:url" content={SITE + page.url.pathname} />
+	<meta property="og:image" content="{SITE}/og.png" />
+	<meta property="og:image:width" content="1200" />
+	<meta property="og:image:height" content="630" />
+	<meta
+		property="og:image:alt"
+		content="Sec+le logo above a sample board solving ZERO TRUST in three guesses"
+	/>
+	<meta name="twitter:card" content="summary_large_image" />
+	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 	<link rel="preconnect" href="https://fonts.googleapis.com" />
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous" />
 	<link

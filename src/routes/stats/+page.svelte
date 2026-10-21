@@ -166,7 +166,7 @@
 </script>
 
 <svelte:head>
-	<title>Sec+le Stats</title>
+	<title>Your Security+ Weak Spots · Sec+le</title>
 </svelte:head>
 
 <main>
