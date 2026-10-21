@@ -70,6 +70,8 @@
 	}
 	.tile {
 		display: flex;
+		flex: none;
+		width: var(--size);
 		--size: 2.5rem;
 	}
 </style>
