@@ -5,7 +5,7 @@ import { LAUNCH } from './launch.ts';
 type Term = { id: number; acronym: string; added: string; retired: string };
 
 const YEARS_AHEAD = 5;
-const MODES = ['term'];
+const MODES = ['term', 'acronym'];
 const OUTPUT = 'src/lib/server/schedule.json';
 
 let seed = process.env.DAILY_SEED ?? '';

@@ -5,6 +5,7 @@
 		Shape,
 		Color,
 		Guess,
+		Mode,
 		Difficulty,
 		Hints,
 		NewGame,
@@ -18,7 +19,7 @@
 	import HintPanel from '#lib/components/HintPanel.svelte';
 	import Modal from '#lib/components/Modal.svelte';
 
-	type Props = { mode: string; daily: boolean };
+	type Props = { mode: Mode; daily: boolean };
 	type Status = 'loading' | 'playing' | Result;
 	type Level = { value: Difficulty; name: string; about: string };
 	type Domain = { value: string; name: string };
@@ -62,7 +63,7 @@
 	let preferred = $state<Difficulty>('medium');
 	let gameDomain = $state('');
 	let domain = $state('');
-	let hints = $state<Hints>({ category: '', definition: '' });
+	let hints = $state<Hints>({ acronym: '', category: '', definition: '' });
 	let guesses = $state<Guess[]>([]);
 	let current = $state('');
 	let status = $state<Status>('loading');
@@ -73,6 +74,8 @@
 	let copied = $state(false);
 	let waiting = false;
 
+	let section = $derived(daily ? 'daily' : 'play');
+	let title = $derived(pageTitle(daily, mode));
 	let total = $derived(countLetters(shape));
 	let keyColors = $derived(getKeyColors(guesses));
 
@@ -100,6 +103,12 @@
 			}
 		}
 		return result;
+	}
+
+	function pageTitle(daily: boolean, mode: Mode): string {
+		let kind = 'Unlimited';
+		if (daily) kind = 'Daily';
+		return `${kind} ${mode} · Sec+le`;
 	}
 
 	function levelName(value: Difficulty): string {
@@ -180,28 +189,23 @@
 		start();
 	}
 
-	function changeDifficulty(e: Event) {
-		savePreferred();
-		(e.currentTarget as HTMLSelectElement).blur();
-	}
-
 	function loadDomain() {
 		const param = new URL(window.location.href).searchParams.get('domain');
 		if (param && /^[1-5]$/.test(param)) domain = param;
 	}
 
-	function changeDomain(e: Event) {
+	function changeDomain() {
 		const url = new URL(window.location.href);
 		if (domain === '') url.searchParams.delete('domain');
 		else url.searchParams.set('domain', domain);
 		replaceState(url, {});
-		(e.currentTarget as HTMLSelectElement).blur();
 	}
 
 	function record(objective: string) {
 		const entry: HistoryEntry = {
 			termId,
 			day,
+			mode,
 			objective,
 			difficulty,
 			result: status as Result,
@@ -218,11 +222,14 @@
 	}
 
 	async function start() {
-		let url = `/api/game/new?difficulty=${preferred}`;
+		let url = `/api/game/new?mode=${mode}&difficulty=${preferred}`;
 		if (daily) url += `&date=${date}`;
 		if (!daily && domain !== '') url += `&domain=${domain}`;
 		if (!daily && termId !== 0) url += `&last=${termId}`;
+		if (waiting) return;
+		waiting = true;
 		const res = await fetch(url);
+		waiting = false;
 		if (!res.ok) {
 			message = 'Could not load a puzzle';
 			return;
@@ -265,7 +272,8 @@
 				date: daily ? date : '',
 				guess: current,
 				guessNumber: guesses.length + 1,
-				difficulty
+				difficulty,
+				mode
 			})
 		});
 		waiting = false;
@@ -346,7 +354,9 @@
 	function shareText(): string {
 		let score = String(guesses.length);
 		if (status !== 'won') score = 'X';
-		let text = `Sec+le #${day} · ${levelName(difficulty)} · ${score}/${max}\n`;
+		let title = 'Sec+le';
+		if (mode === 'acronym') title += ' Acronym';
+		let text = `${title} #${day} · ${levelName(difficulty)} · ${score}/${max}\n`;
 		for (const guess of guesses) {
 			text += '\n' + emojiRow(guess);
 		}
@@ -363,6 +373,10 @@
 	}
 
 	function pressKey(key: string) {
+		if (key === 'ENTER' && !daily && status !== 'playing' && status !== 'loading') {
+			start();
+			return;
+		}
 		if (status !== 'playing') return;
 		message = '';
 		if (key === 'ENTER') submit();
@@ -372,10 +386,18 @@
 
 	function onkeydown(e: KeyboardEvent) {
 		if (e.ctrlKey || e.metaKey || e.altKey) return;
-		if (e.target instanceof HTMLSelectElement) return;
 		const key = e.key.toUpperCase();
-		if (key === 'ENTER') pressKey('ENTER');
-		else if (key === 'BACKSPACE') pressKey('BACK');
+		if (e.target instanceof HTMLSelectElement) {
+			if (!/^[A-Z0-9.\/-]$/.test(key)) return;
+			e.preventDefault();
+			e.target.blur();
+		}
+		if (key === 'ENTER') {
+			if (e.target instanceof HTMLAnchorElement) return;
+			if (e.target instanceof HTMLButtonElement && status !== 'playing') return;
+			if (status !== 'loading') e.preventDefault();
+			pressKey('ENTER');
+		} else if (key === 'BACKSPACE') pressKey('BACK');
 		else if (/^[A-Z0-9.\/-]$/.test(key)) pressKey(key);
 	}
 
@@ -394,6 +416,10 @@
 	});
 </script>
 
+<svelte:head>
+	<title>{title}</title>
+</svelte:head>
+
 <svelte:window {onkeydown} />
 
 {#snippet after()}
@@ -407,14 +433,30 @@
 
 <main>
 	<h1>Sec+le</h1>
-	<nav>
-		<a href="/daily/{mode}" class:current={daily}
-			>Daily{#if daily && day > 0}&nbsp;#{day}{/if}</a
-		>
-		<a href="/play/{mode}" class:current={!daily}>Unlimited</a>
-	</nav>
+	<div class="navs">
+		<nav aria-label="Game type">
+			<a href="/daily/{mode}" class:current={daily} aria-current={daily ? 'page' : undefined}
+				>Daily{#if daily && day > 0}&nbsp;#{day}{/if}</a
+			>
+			<a href="/play/{mode}" class:current={!daily} aria-current={daily ? undefined : 'page'}
+				>Unlimited</a
+			>
+		</nav>
+		<nav aria-label="Mode">
+			<a
+				href="/{section}/term"
+				class:current={mode === 'term'}
+				aria-current={mode === 'term' ? 'page' : undefined}>Term</a
+			>
+			<a
+				href="/{section}/acronym"
+				class:current={mode === 'acronym'}
+				aria-current={mode === 'acronym' ? 'page' : undefined}>Acronym</a
+			>
+		</nav>
+	</div>
 	<div class="filters">
-		<select aria-label="Difficulty" bind:value={preferred} onchange={changeDifficulty}>
+		<select aria-label="Difficulty" bind:value={preferred} onchange={savePreferred}>
 			{#each levels as level}
 				<option value={level.value}>{level.name}</option>
 			{/each}
@@ -431,9 +473,7 @@
 	{#if status === 'playing' && (preferred !== difficulty || domain !== gameDomain)}
 		<p class="note">{daily ? 'Changes start tomorrow' : 'Changes start next game'}</p>
 	{/if}
-	{#if message}
-		<p><b>{message}</b></p>
-	{/if}
+	<p class="message" role="status">{message}</p>
 
 	<Board {shape} {guesses} {current} {max} />
 
@@ -460,7 +500,9 @@
 
 {#if showResult}
 	<Modal title={resultTitle()} onclose={closeResult}>
-		<p class="answer">{answer}</p>
+		<p class="answer">
+			{answer}{#if hints.acronym}&nbsp;({hints.acronym}){/if}
+		</p>
 		<p class="note">{hints.category}</p>
 		<p>{hints.definition}</p>
 		{@render after()}
@@ -472,7 +514,7 @@
 	main {
 		box-sizing: border-box;
 		width: 100%;
-		max-width: 500px;
+		max-width: 1000px;
 		margin: 0 auto;
 		padding: 0 16px 16px;
 		text-align: center;
@@ -497,6 +539,12 @@
 		font-weight: bold;
 		text-decoration: none;
 	}
+	.navs {
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		column-gap: 40px;
+	}
 	nav {
 		display: flex;
 		justify-content: center;
@@ -504,7 +552,7 @@
 		margin-bottom: 12px;
 	}
 	nav a {
-		color: var(--filled);
+		color: var(--muted);
 		text-decoration: none;
 	}
 	nav a.current {
@@ -537,11 +585,16 @@
 	}
 	.note {
 		font-size: 0.85rem;
-		color: var(--filled);
+		color: var(--muted);
 	}
 	a {
 		color: var(--text);
 		font-size: 0.85rem;
+	}
+	.message {
+		min-height: 1.2em;
+		margin: 4px 0;
+		font-weight: bold;
 	}
 	.filters {
 		display: flex;

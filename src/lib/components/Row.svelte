@@ -1,52 +1,54 @@
 <script lang="ts">
-	import type { Shape, Color } from '#lib/types.js';
+	import type { Cell, Color } from '#lib/types.js';
 	import Tile from './Tile.svelte';
 
-	type Props = { shape: Shape; text: string; colors: Color[] };
-	let { shape, text, colors }: Props = $props();
+	type Props = { lines: Cell[][]; text: string; colors: Color[] };
+	let { lines, text, colors }: Props = $props();
 
-	type Cell = { letter: string; color: Color | ''; gap: boolean };
+	function letterAt(index: number): string {
+		if (index < text.length) return text[index];
+		return '';
+	}
 
-	let cells = $derived(makeCells(shape, text, colors));
-
-	function makeCells(shape: Shape, text: string, colors: Color[]): Cell[] {
-		const result: Cell[] = [];
-		let i = 0;
-		for (const part of shape) {
-			if (part === ' ') {
-				result.push({ letter: '', color: '', gap: true });
-				continue;
-			}
-			for (let k = 0; k < part; k++) {
-				let letter = '';
-				let color: Color | '' = '';
-				if (i < text.length) letter = text[i];
-				if (i < colors.length) color = colors[i];
-				result.push({ letter: letter, color: color, gap: false });
-				i++;
-			}
-		}
-		return result;
+	function colorAt(index: number): Color | '' {
+		if (index < colors.length) return colors[index];
+		return '';
 	}
 </script>
 
 <div class="row">
-	{#each cells as cell}
-		{#if cell.gap}
-			<div class="gap"></div>
-		{:else}
-			<Tile letter={cell.letter} color={cell.color} />
-		{/if}
+	{#each lines as line}
+		<div class="line">
+			{#each line as cell}
+				{#if cell.gap}
+					<div class="gap"></div>
+				{:else if cell.more}
+					<div class="more">→</div>
+				{:else}
+					<Tile letter={letterAt(cell.index)} color={colorAt(cell.index)} />
+				{/if}
+			{/each}
+		</div>
 	{/each}
 </div>
 
 <style>
 	.row {
 		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+	.line {
+		display: flex;
 		justify-content: center;
 		gap: 4px;
 	}
 	.gap {
-		flex: 0 1 1rem;
+		flex: 0 0 16px;
+	}
+	.more {
+		flex: 0 0 12px;
+		align-self: center;
+		color: var(--muted);
 	}
 </style>

@@ -15,17 +15,15 @@
 		if (saved) theme = saved;
 	});
 
-	function changeTheme(e: Event) {
+	function changeTheme() {
 		document.documentElement.dataset.theme = theme;
 		try {
 			localStorage.setItem('theme', theme);
 		} catch {}
-		(e.currentTarget as HTMLSelectElement).blur();
 	}
 </script>
 
 <svelte:head>
-	<title>Sec+le</title>
 	<meta name="description" content={description} />
 	<meta property="og:title" content="Sec+le" />
 	<meta property="og:description" content={description} />
@@ -40,11 +38,13 @@
 	/>
 </svelte:head>
 
-<select class="theme" aria-label="Theme" bind:value={theme} onchange={changeTheme}>
-	<option value="light">Light</option>
-	<option value="dark">Dark</option>
-	<option value="crimson">Crimson Defense</option>
-</select>
+<header>
+	<select aria-label="Theme" bind:value={theme} onchange={changeTheme}>
+		<option value="light">Light</option>
+		<option value="dark">Dark</option>
+		<option value="crimson">Crimson Defense</option>
+	</select>
+</header>
 
 {@render children()}
 
@@ -67,11 +67,13 @@
 	:global(:root) {
 		--bg: #ffffff;
 		--text: #1a1a1b;
-		--green: #6aaa64;
+		--green: #2f7d32;
 		--yellow: #c9b458;
-		--gray: #787c7e;
-		--border: #d3d6da;
-		--filled: #878a8c;
+		--on-yellow: #1a1a1b;
+		--gray: #6b6e70;
+		--border: #8e9194;
+		--filled: #565758;
+		--muted: #5f6368;
 		--key: #d3d6da;
 		--github: #000000;
 		--font: system-ui, sans-serif;
@@ -80,12 +82,14 @@
 	:global(:root[data-theme='dark']) {
 		--bg: #121213;
 		--text: #f8f8f8;
-		--green: #538d4e;
+		--green: #3e7a3a;
 		--yellow: #b59f3b;
+		--on-yellow: #121213;
 		--gray: #3a3a3c;
-		--border: #3a3a3c;
-		--filled: #565758;
-		--key: #818384;
+		--border: #656669;
+		--filled: #8a8b8d;
+		--muted: #a1a2a4;
+		--key: #56585a;
 		--github: #ffffff;
 	}
 	:global(:root[data-theme='crimson']) {
@@ -93,10 +97,12 @@
 		--text: #f2f2f2;
 		--green: #a3202f;
 		--yellow: #c9a227;
+		--on-yellow: #1a1a1a;
 		--gray: #3a3a3a;
-		--border: rgba(242, 242, 242, 0.15);
-		--filled: rgba(242, 242, 242, 0.55);
-		--key: rgba(242, 242, 242, 0.15);
+		--border: #6a6a6a;
+		--filled: #9a9a9a;
+		--muted: #a6a6a6;
+		--key: #3d3d3d;
 		--github: #ffffff;
 		--font: 'Kumbh Sans', sans-serif;
 		--heading-font: 'Roboto Slab', serif;
@@ -113,13 +119,24 @@
 	:global(h1) {
 		font-family: var(--heading-font);
 	}
+	:global(.sr-only) {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		padding: 0;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
 	footer {
 		position: relative;
 		margin-top: auto;
 		padding: 16px 48px;
 		text-align: center;
 		font-size: 0.8rem;
-		color: var(--filled);
+		color: var(--muted);
 	}
 	footer p {
 		margin: 0;
@@ -134,10 +151,12 @@
 		bottom: 14px;
 		display: flex;
 	}
-	.theme {
-		position: absolute;
-		top: 12px;
-		right: 16px;
+	header {
+		display: flex;
+		justify-content: flex-end;
+		padding: 12px 16px 0;
+	}
+	select {
 		font: inherit;
 		background: var(--bg);
 		color: var(--text);

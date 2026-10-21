@@ -19,3 +19,7 @@
 19|Penetration testing|2026-10-19
 20|Non-repudiation|2026-10-19
 21|Zero trust|2026-10-19
+22|Multifactor authentication|2026-10-21
+23|Endpoint detection and response|2026-10-21
+24|Virtual private network|2026-10-21
+25|Public key infrastructure|2026-10-21

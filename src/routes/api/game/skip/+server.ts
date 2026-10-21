@@ -15,6 +15,6 @@ export async function POST({ request }) {
 	return json({
 		answer: t.term,
 		objective: t.objective,
-		hints: unlockedHints(t, 'easy', 0, true)
+		hints: unlockedHints(t, 'term', 'easy', 0, true)
 	} satisfies SkipResult);
 }

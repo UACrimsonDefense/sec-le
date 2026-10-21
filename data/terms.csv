@@ -20,3 +20,7 @@ id,term,acronym,definition,objective,reviewed,added,retired,source
 19,Penetration testing,,An authorized simulated attack to find weaknesses before real attackers do.,5.5,no,2026-10-19,,
 20,Non-repudiation,,"Proof that someone took an action, so they cannot later deny it.",1.2,no,2026-10-19,,
 21,Zero trust,,"A model where no user or device is trusted by default, even inside the network.",1.2,no,2026-10-19,,
+22,Multifactor authentication,MFA,"Requiring two or more different kinds of proof, like a password plus a phone prompt, before granting access.",4.6,no,2026-10-21,,
+23,Endpoint detection and response,EDR,Software on each device that watches for suspicious behavior and lets responders contain threats.,4.5,no,2026-10-21,,
+24,Virtual private network,VPN,An encrypted tunnel that carries traffic safely across the internet or other untrusted links.,3.2,no,2026-10-21,,
+25,Public key infrastructure,PKI,The certificate authorities and issued certificates that let parties trust each other's identities.,1.4,no,2026-10-21,,

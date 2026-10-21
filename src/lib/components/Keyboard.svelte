@@ -5,15 +5,29 @@
 	let { colors, onkey }: Props = $props();
 
 	const rows: string[][] = [
-		['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '.', '/'],
+		['1', '2', '3', '4', '5', '6', '7', '8', '9', '0'],
 		['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'],
-		['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'],
-		['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', 'BACK']
+		['A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', '-'],
+		['ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '.', '/', 'BACK']
 	];
 
 	function label(key: string): string {
 		if (key === 'BACK') return '⌫';
 		return key;
+	}
+
+	function name(key: string): string {
+		let result = key;
+		if (key === 'BACK') result = 'Backspace';
+		if (key === 'ENTER') result = 'Enter';
+		if (key === '-') result = 'Dash';
+		if (key === '.') result = 'Dot';
+		if (key === '/') result = 'Slash';
+		const color = colors[key];
+		if (color === 'correct') result += ', correct';
+		if (color === 'present') result += ', wrong spot';
+		if (color === 'absent') result += ', not in answer';
+		return result;
 	}
 </script>
 
@@ -24,10 +38,16 @@
 				<button
 					class="key {colors[key] ?? ''}"
 					class:wide={key === 'ENTER' || key === 'BACK'}
+					aria-label={name(key)}
 					onmousedown={(e) => e.preventDefault()}
 					onclick={() => onkey(key)}
 				>
 					{label(key)}
+					{#if colors[key] === 'correct'}
+						<span class="mark" aria-hidden="true">✓</span>
+					{:else if colors[key] === 'present'}
+						<span class="mark" aria-hidden="true">•</span>
+					{/if}
 				</button>
 			{/each}
 		</div>
@@ -36,9 +56,19 @@
 
 <style>
 	.keyboard {
+		max-width: 500px;
+		margin: 0 auto;
 		display: flex;
 		flex-direction: column;
 		gap: 6px;
+		padding: 8px 0;
+		background: var(--bg);
+	}
+	@media (max-width: 600px) {
+		.keyboard {
+			position: sticky;
+			bottom: 0;
+		}
 	}
 	.row {
 		display: flex;
@@ -46,6 +76,7 @@
 		gap: 4px;
 	}
 	.key {
+		position: relative;
 		flex: 0 1 2.6rem;
 		min-width: 0;
 		height: 3.2rem;
@@ -54,6 +85,7 @@
 		border-radius: 4px;
 		background: var(--key);
 		color: inherit;
+		font: inherit;
 		font-weight: bold;
 		cursor: pointer;
 		touch-action: manipulation;
@@ -62,16 +94,24 @@
 		flex-basis: 4rem;
 		font-size: 0.75rem;
 	}
+	.mark {
+		position: absolute;
+		top: 2px;
+		right: 3px;
+		font-size: 0.7rem;
+		line-height: 1;
+	}
 	.correct {
 		background: var(--green);
 		color: white;
 	}
 	.present {
 		background: var(--yellow);
-		color: white;
+		color: var(--on-yellow);
 	}
 	.absent {
 		background: var(--gray);
 		color: white;
+		text-decoration: line-through;
 	}
 </style>

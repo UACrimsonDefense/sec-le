@@ -1,4 +1,4 @@
-import type { Shape, Difficulty, Hints } from '#lib/types.js';
+import type { Shape, Mode, Difficulty, Hints } from '#lib/types.js';
 import data from '#lib/server/terms.json';
 
 export type Term = {
@@ -36,18 +36,25 @@ export function maxGuesses(term: string): number {
 	return Math.min(8, Math.max(5, letters(term).length + 2));
 }
 
+export function isMode(value: unknown): value is Mode {
+	return value === 'term' || value === 'acronym';
+}
+
 export function isDifficulty(value: unknown): value is Difficulty {
 	return value === 'easy' || value === 'medium' || value === 'hard';
 }
 
 export function unlockedHints(
 	t: Term,
+	mode: Mode,
 	difficulty: Difficulty,
 	guessNumber: number,
 	over: boolean
 ): Hints {
-	const hints: Hints = { category: '', definition: '' };
+	const hints: Hints = { acronym: '', category: '', definition: '' };
 	const max = maxGuesses(t.term);
+
+	if (over || mode === 'acronym') hints.acronym = t.acronym;
 
 	if (over || difficulty === 'easy') {
 		hints.category = t.category;

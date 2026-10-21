@@ -1,7 +1,8 @@
 export type Shape = (number | ' ')[];
 export type Color = 'correct' | 'present' | 'absent';
+export type Mode = 'term' | 'acronym';
 export type Difficulty = 'easy' | 'medium' | 'hard';
-export type Hints = { category: string; definition: string };
+export type Hints = { acronym: string; category: string; definition: string };
 
 export type NewGame = {
 	termId: number;
@@ -16,6 +17,7 @@ export type GuessBody = {
 	guess: string;
 	guessNumber: number;
 	difficulty: Difficulty;
+	mode: Mode;
 };
 export type GuessResult = {
 	colors: Color[];
@@ -28,10 +30,12 @@ export type GuessResult = {
 export type SkipBody = { termId: number };
 export type SkipResult = { answer: string; objective: string; hints: Hints };
 export type Guess = { text: string; colors: Color[] };
+export type Cell = { index: number; gap: boolean; more: boolean };
 export type Result = 'won' | 'lost' | 'skipped';
 export type HistoryEntry = {
 	termId: number;
 	day: number;
+	mode: Mode;
 	objective: string;
 	difficulty: Difficulty;
 	result: Result;

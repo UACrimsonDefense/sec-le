@@ -1,6 +1,7 @@
 import schedule from '#lib/server/schedule.json';
 import { terms } from '#lib/server/terms.js';
 import type { Term } from '#lib/server/terms.js';
+import type { Mode } from '#lib/types.js';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -20,7 +21,9 @@ export function isAllowedDate(date: unknown): date is string {
 	return date >= schedule.launch && date >= yesterday && date <= tomorrow;
 }
 
-export function dailyTerm(date: string): Term | undefined {
-	const id = schedule.term[(dayNumber(date) - 1) % schedule.term.length];
+export function dailyTerm(date: string, mode: Mode): Term | undefined {
+	let list = schedule.term;
+	if (mode === 'acronym') list = schedule.acronym;
+	const id = list[(dayNumber(date) - 1) % list.length];
 	return terms.find((t) => t.id === id);
 }

@@ -5,4 +5,6 @@
 	let { params }: PageProps = $props();
 </script>
 
-<Game mode={params.mode} daily={false} />
+{#key params.mode}
+	<Game mode={params.mode} daily={false} />
+{/key}
