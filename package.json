@@ -8,7 +8,7 @@
 	"scripts": {
 		"data": "node scripts/build-data.ts && node --env-file-if-exists=.env.seed scripts/build-schedule.ts",
 		"dev": "pnpm data && vite dev",
-		"build": "pnpm data --release && CLOUDFLARE_INCLUDE_PROCESS_ENV=false wrangler types --check && vite build",
+		"build": "pnpm data --release && vite build",
 		"preview": "wrangler dev .svelte-kit/cloudflare/_worker.js --port 4173",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "pnpm data && CLOUDFLARE_INCLUDE_PROCESS_ENV=false wrangler types --check && svelte-kit sync && svelte-check --tsconfig ./tsconfig.json && tsc -p scripts",
