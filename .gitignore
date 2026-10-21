@@ -35,3 +35,7 @@ vite.config.ts.timestamp-*
 /data/source/
 /scripts/local/
 /data/candidates.csv
+
+# Wrangler local secrets, logs
+.dev.vars*
+*.log

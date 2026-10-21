@@ -30,6 +30,23 @@ pnpm build
 
 You can preview the production build with `pnpm preview`.
 
+The build needs a `DAILY_SEED`, which decides the daily puzzle order. The real one is secret, so for a local build put any value in `.env.seed`:
+
+```sh
+echo 'DAILY_SEED=local' > .env.seed
+```
+
+`pnpm dev` works without it.
+
+## Terms
+
+All terms live in [`data/terms.csv`](data/terms.csv). To fix or suggest one, open an issue or use "Report this definition" at the end of a game. Pull requests are welcome too:
+
+- Never delete a row or reuse an ID. Set `retired` to a date instead.
+- New terms need an `added` date after today.
+- Definitions must be your own words, at most two short sentences, and must not contain a word from the answer.
+- `pnpm data` checks all of this.
+
 ## Credits and disclaimers
 
 - Code is [MIT](LICENSE). The dictionary in `src/lib/server/words.txt` is from [SCOWL / ESDB](https://wordlist.aspell.net) by Kevin Atkinson, under its own license in [`scowl-license.txt`](src/lib/server/scowl-license.txt).
