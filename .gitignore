@@ -31,3 +31,7 @@ vite.config.ts.timestamp-*
 # direnv
 .direnv
 /src/lib/server/schedule.json
+
+/data/source/
+/scripts/local/
+/data/candidates.csv

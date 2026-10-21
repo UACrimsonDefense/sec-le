@@ -7,7 +7,7 @@
 	let { children }: LayoutProps = $props();
 
 	const description =
-		'A Wordle-style game for Security+ (SY0-701) terms. Guess the term, unlock hints and find your weak exam domains.';
+		'A daily word-guessing game for Security+ (SY0-701) terms. Guess the term, unlock hints and find your weak exam domains.';
 </script>
 
 <svelte:head>
@@ -38,11 +38,17 @@
 		Made with ❤️ by <a href="https://github.com/SamuelBozeman">Samuel Bozeman</a> for
 		<a href="https://crimsondefense.org">Crimson Defense</a> and every future Sec+ holder
 	</p>
-	<p class="a11y">
+	<p class="fine">
 		We are committed to making this website accessible to all users in accordance with WCAG 2.1
 		Level AA. If you encounter any accessibility issues, please
 		<a href="https://github.com/UACrimsonDefense/sec-le/issues/new">create a GitHub issue</a> or
 		email us at <a href="mailto:crimsoncyberdefense@gmail.com">crimsoncyberdefense@gmail.com</a>.
+	</p>
+	<p class="fine">
+		Crimson Defense is a registered student organization at the University of Alabama. Views and
+		content are our own. Not affiliated with or endorsed by CompTIA or The New York Times. CompTIA
+		and Security+ are registered trademarks of CompTIA, Inc. Wordle is a trademark of The New York
+		Times Company.
 	</p>
 	<a class="repo" href="https://github.com/UACrimsonDefense/sec-le" aria-label="Source on GitHub">
 		<svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true">
@@ -136,7 +142,7 @@
 	footer p {
 		margin: 0;
 	}
-	.a11y {
+	.fine {
 		max-width: 600px;
 		margin: 8px auto 0;
 	}
