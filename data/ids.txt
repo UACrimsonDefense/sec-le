@@ -23,472 +23,472 @@
 23|Endpoint detection and response|2026-10-21
 24|Virtual private network|2026-10-21
 25|Public key infrastructure|2026-10-21
-26|Technical control|2026-10-22
-27|Managerial control|2026-10-22
-28|Operational control|2026-10-22
-29|Physical control|2026-10-22
-30|Preventive control|2026-10-22
-31|Deterrent control|2026-10-22
-32|Detective control|2026-10-22
-33|Corrective control|2026-10-22
-34|Compensating control|2026-10-22
-35|Directive control|2026-10-22
-36|CIA triad|2026-10-22
-37|Authentication authorization and accounting|2026-10-22
-38|Authentication|2026-10-22
-39|Authorization|2026-10-22
-40|Gap analysis|2026-10-22
-41|Control plane|2026-10-22
-42|Data plane|2026-10-22
-43|Adaptive identity|2026-10-22
-44|Threat scope reduction|2026-10-22
-45|Policy-driven access control|2026-10-22
-46|Policy administrator|2026-10-22
-47|Policy engine|2026-10-22
-48|Policy enforcement point|2026-10-22
-49|Implicit trust zone|2026-10-22
-50|Bollards|2026-10-22
-51|Access control vestibule|2026-10-22
-52|Fencing|2026-10-22
-53|Video surveillance|2026-10-22
-54|Closed-circuit television|2026-10-22
-55|Pan-tilt-zoom camera|2026-10-22
-56|Security guard|2026-10-22
-57|Access badge|2026-10-22
-58|Infrared sensor|2026-10-22
-59|Pressure sensor|2026-10-22
-60|Microwave sensor|2026-10-22
-61|Ultrasonic sensor|2026-10-22
-62|Honeynet|2026-10-22
-63|Honeyfile|2026-10-22
-64|Honeytoken|2026-10-22
-65|Change management|2026-10-22
-66|Impact analysis|2026-10-22
-67|Backout plan|2026-10-22
-68|Maintenance window|2026-10-22
-69|Standard operating procedure|2026-10-22
-70|Allow list|2026-10-22
-71|Deny list|2026-10-22
-72|Stakeholder|2026-10-22
-73|Downtime|2026-10-22
-74|Legacy application|2026-10-22
-75|Dependency|2026-10-22
-76|Version control|2026-10-22
-77|Public key|2026-10-22
-78|Private key|2026-10-22
-79|Key escrow|2026-10-22
-80|Encryption|2026-10-22
-81|Full-disk encryption|2026-10-22
-82|Database encryption|2026-10-22
-83|Transport encryption|2026-10-22
-84|Asymmetric encryption|2026-10-22
-85|Symmetric encryption|2026-10-22
-86|Key exchange|2026-10-22
-87|Key length|2026-10-22
-88|Trusted Platform Module|2026-10-22
-89|Hardware security module|2026-10-22
-90|Key management system|2026-10-22
-91|Secure enclave|2026-10-22
-92|Self-encrypting drive|2026-10-22
-93|Obfuscation|2026-10-22
-94|Steganography|2026-10-22
-95|Tokenization|2026-10-22
-96|Data masking|2026-10-22
-97|Hashing|2026-10-22
-98|Salting|2026-10-22
-99|Digital signature|2026-10-22
-100|Key stretching|2026-10-22
-101|Blockchain|2026-10-22
-102|Open public ledger|2026-10-22
-103|Digital certificate|2026-10-22
-104|Certificate authority|2026-10-22
-105|Registration authority|2026-10-22
-106|Certificate revocation list|2026-10-22
-107|Online Certificate Status Protocol|2026-10-22
-108|Self-signed certificate|2026-10-22
-109|Wildcard certificate|2026-10-22
-110|Subject alternative name|2026-10-22
-111|Certificate signing request|2026-10-22
-112|Root of trust|2026-10-22
-113|Advanced Encryption Standard|2026-10-22
-114|Data Encryption Standard|2026-10-22
-115|Rivest Shamir Adleman|2026-10-22
-116|Elliptic curve cryptography|2026-10-22
-117|Diffie-Hellman ephemeral|2026-10-22
-118|Digital Signature Algorithm|2026-10-22
-119|Message Digest 5|2026-10-22
-120|Secure Hash Algorithm|2026-10-22
-121|Hash-based message authentication code|2026-10-22
-122|Initialization vector|2026-10-22
-123|Perfect forward secrecy|2026-10-22
-124|Password-Based Key Derivation Function 2|2026-10-22
-125|Galois/Counter Mode|2026-10-22
-126|Electronic codebook|2026-10-22
-127|Cipher block chaining|2026-10-22
-128|Rivest Cipher 4|2026-10-22
-129|Exclusive OR|2026-10-22
-130|Threat actor|2026-10-22
-131|Nation-state|2026-10-22
-132|Unskilled attacker|2026-10-22
-133|Hacktivist|2026-10-22
-134|Insider threat|2026-10-22
-135|Organized crime|2026-10-22
-136|Shadow IT|2026-10-22
-137|Advanced persistent threat|2026-10-22
-138|Data exfiltration|2026-10-22
-139|Espionage|2026-10-22
-140|Threat vector|2026-10-22
-141|Vishing|2026-10-22
-142|Smishing|2026-10-22
-143|Removable media|2026-10-22
-144|Default credentials|2026-10-22
-145|Open port|2026-10-22
-146|Supply chain attack|2026-10-22
-147|Managed service provider|2026-10-22
-148|Social engineering|2026-10-22
-149|Misinformation|2026-10-22
-150|Disinformation|2026-10-22
-151|Impersonation|2026-10-22
-152|Business email compromise|2026-10-22
-153|Pretexting|2026-10-22
-154|Watering hole attack|2026-10-22
-155|Brand impersonation|2026-10-22
-156|Typosquatting|2026-10-22
-157|Memory injection|2026-10-22
-158|Buffer overflow|2026-10-22
-159|Race condition|2026-10-22
-160|Time-of-check to time-of-use|2026-10-22
-161|Malicious update|2026-10-22
-162|Cross-site scripting|2026-10-22
-163|Firmware|2026-10-22
-164|End-of-life|2026-10-22
-165|Virtual machine escape|2026-10-22
-166|Resource reuse|2026-10-22
-167|Misconfiguration|2026-10-22
-168|Sideloading|2026-10-22
-169|Jailbreaking|2026-10-22
-170|Trojan|2026-10-22
-171|Worm|2026-10-22
-172|Spyware|2026-10-22
-173|Bloatware|2026-10-22
-174|Virus|2026-10-22
-175|Keylogger|2026-10-22
-176|Logic bomb|2026-10-22
-177|Rootkit|2026-10-22
-178|Remote access Trojan|2026-10-22
-179|Potentially unwanted program|2026-10-22
-180|RFID cloning|2026-10-22
-181|Denial-of-service|2026-10-22
-182|Distributed denial-of-service|2026-10-22
-183|Amplification attack|2026-10-22
-184|DNS poisoning|2026-10-22
-185|ARP poisoning|2026-10-22
-186|On-path attack|2026-10-22
-187|Credential replay|2026-10-22
-188|Replay attack|2026-10-22
-189|Privilege escalation|2026-10-22
-190|Cross-site request forgery|2026-10-22
-191|Directory traversal|2026-10-22
-192|Downgrade attack|2026-10-22
-193|Hash collision|2026-10-22
-194|Birthday attack|2026-10-22
-195|Password spraying|2026-10-22
-196|Account lockout|2026-10-22
-197|Impossible travel|2026-10-22
-198|Concurrent session usage|2026-10-22
-199|Indicators of compromise|2026-10-22
-200|Network segmentation|2026-10-22
-201|Access control list|2026-10-22
-202|Application allow list|2026-10-22
-203|Isolation|2026-10-22
-204|Patching|2026-10-22
-205|Least privilege|2026-10-22
-206|Configuration enforcement|2026-10-22
-207|Decommissioning|2026-10-22
-208|System hardening|2026-10-22
-209|Host-based firewall|2026-10-22
-210|Host-based intrusion prevention system|2026-10-22
-211|Host-based intrusion detection system|2026-10-22
-212|Data execution prevention|2026-10-22
-213|Address space layout randomization|2026-10-22
-214|Responsibility matrix|2026-10-22
-215|Hybrid cloud|2026-10-22
-216|Infrastructure as code|2026-10-22
-217|Serverless|2026-10-22
-218|Microservices|2026-10-22
-219|Air gap|2026-10-22
-220|Logical segmentation|2026-10-22
-221|Software-defined networking|2026-10-22
-222|On-premises|2026-10-22
-223|Containerization|2026-10-22
-224|Internet of Things|2026-10-22
-225|Industrial control system|2026-10-22
-226|Supervisory control and data acquisition|2026-10-22
-227|Real-time operating system|2026-10-22
-228|Embedded system|2026-10-22
-229|High availability|2026-10-22
-230|Scalability|2026-10-22
-231|Risk transference|2026-10-22
-232|Virtual private cloud|2026-10-22
-233|Infrastructure as a service|2026-10-22
-234|Platform as a service|2026-10-22
-235|Software as a service|2026-10-22
-236|Cloud service provider|2026-10-22
-237|Virtual machine|2026-10-22
-238|Virtual desktop infrastructure|2026-10-22
-239|Security zone|2026-10-22
-240|Attack surface|2026-10-22
-241|Fail-open|2026-10-22
-242|Fail-closed|2026-10-22
-243|Network tap|2026-10-22
-244|Jump server|2026-10-22
-245|Proxy server|2026-10-22
-246|Intrusion prevention system|2026-10-22
-247|Intrusion detection system|2026-10-22
-248|Load balancer|2026-10-22
-249|Port security|2026-10-22
-250|Extensible Authentication Protocol|2026-10-22
-251|Web application firewall|2026-10-22
-252|Unified threat management|2026-10-22
-253|Next-generation firewall|2026-10-22
-254|Tunneling|2026-10-22
-255|Transport Layer Security|2026-10-22
-256|Secure Sockets Layer|2026-10-22
-257|Internet Protocol Security|2026-10-22
-258|Authentication Header|2026-10-22
-259|Encapsulating Security Payload|2026-10-22
-260|Internet Key Exchange|2026-10-22
-261|Layer 2 Tunneling Protocol|2026-10-22
-262|Point-to-Point Tunneling Protocol|2026-10-22
-263|Secure access service edge|2026-10-22
-264|Virtual local area network|2026-10-22
-265|Secure web gateway|2026-10-22
-266|Network address translation|2026-10-22
-267|Regulated data|2026-10-22
-268|Trade secret|2026-10-22
-269|Intellectual property|2026-10-22
-270|Data classification|2026-10-22
-271|Data at rest|2026-10-22
-272|Data in transit|2026-10-22
-273|Data in use|2026-10-22
-274|Data sovereignty|2026-10-22
-275|Geolocation|2026-10-22
-276|Personally identifiable information|2026-10-22
-277|Protected health information|2026-10-22
-278|Clustering|2026-10-22
-279|Hot site|2026-10-22
-280|Cold site|2026-10-22
-281|Warm site|2026-10-22
-282|Geographic dispersion|2026-10-22
-283|Platform diversity|2026-10-22
-284|Multi-cloud|2026-10-22
-285|Continuity of operations|2026-10-22
-286|Capacity planning|2026-10-22
-287|Failover|2026-10-22
-288|Offsite backup|2026-10-22
-289|Snapshot|2026-10-22
-290|Replication|2026-10-22
-291|Journaling|2026-10-22
-292|Generator|2026-10-22
-293|Uninterruptible power supply|2026-10-22
-294|Power distribution unit|2026-10-22
-295|Redundant array of independent disks|2026-10-22
-296|Secure baseline|2026-10-22
-297|Site survey|2026-10-22
-298|Heat map|2026-10-22
-299|Mobile device management|2026-10-22
-300|Unified endpoint management|2026-10-22
-301|Bring your own device|2026-10-22
-302|Corporate-owned personally enabled|2026-10-22
-303|Choose your own device|2026-10-22
-304|Wi-Fi Protected Access 3|2026-10-22
-305|Simultaneous authentication of equals|2026-10-22
-306|Wired Equivalent Privacy|2026-10-22
-307|Wi-Fi Protected Setup|2026-10-22
-308|Remote Authentication Dial-In User Service|2026-10-22
-309|Near-field communication|2026-10-22
-310|Input validation|2026-10-22
-311|Secure cookie|2026-10-22
-312|Static code analysis|2026-10-22
-313|Code signing|2026-10-22
-314|CAPTCHA|2026-10-22
-315|Unified Extensible Firmware Interface|2026-10-22
-316|Basic input/output system|2026-10-22
-317|Asset inventory|2026-10-22
-318|Enumeration|2026-10-22
-319|Sanitization|2026-10-22
-320|Data destruction|2026-10-22
-321|Certificate of destruction|2026-10-22
-322|Data retention|2026-10-22
-323|Vulnerability scan|2026-10-22
-324|Dynamic analysis|2026-10-22
-325|Package monitoring|2026-10-22
-326|Threat feed|2026-10-22
-327|Open-source intelligence|2026-10-22
-328|Dark web|2026-10-22
-329|Responsible disclosure|2026-10-22
-330|Bug bounty|2026-10-22
-331|False positive|2026-10-22
-332|False negative|2026-10-22
-333|Common Vulnerability Scoring System|2026-10-22
-334|Common Vulnerabilities and Exposures|2026-10-22
-335|Exposure factor|2026-10-22
-336|Risk tolerance|2026-10-22
-337|Cyber insurance|2026-10-22
-338|Structured Threat Information Expression|2026-10-22
-339|Automated Indicator Sharing|2026-10-22
-340|Log aggregation|2026-10-22
-341|Alert tuning|2026-10-22
-342|Quarantine|2026-10-22
-343|Agentless|2026-10-22
-344|Antivirus|2026-10-22
-345|Security Content Automation Protocol|2026-10-22
-346|SNMP trap|2026-10-22
-347|NetFlow|2026-10-22
-348|Security operations center|2026-10-22
-349|Firewall|2026-10-22
-350|Screened subnet|2026-10-22
-351|Signature-based detection|2026-10-22
-352|Web filter|2026-10-22
-353|Group Policy|2026-10-22
-354|SELinux|2026-10-22
-355|DNS filtering|2026-10-22
-356|DMARC|2026-10-22
-357|DomainKeys Identified Mail|2026-10-22
-358|Sender Policy Framework|2026-10-22
-359|File integrity monitoring|2026-10-22
-360|Network access control|2026-10-22
-361|Extended detection and response|2026-10-22
-362|User behavior analytics|2026-10-22
-363|Remotely triggered black hole|2026-10-22
-364|Domain Name System|2026-10-22
-365|Secure Shell|2026-10-22
-366|SSH File Transfer Protocol|2026-10-22
-367|File Transfer Protocol Secure|2026-10-22
-368|Hypertext Transfer Protocol Secure|2026-10-22
-369|Secure Real-time Transport Protocol|2026-10-22
-370|S/MIME|2026-10-22
-371|Pretty Good Privacy|2026-10-22
-372|GNU Privacy Guard|2026-10-22
-373|Account provisioning|2026-10-22
-374|Deprovisioning|2026-10-22
-375|Identity proofing|2026-10-22
-376|Federation|2026-10-22
-377|Single sign-on|2026-10-22
-378|Lightweight Directory Access Protocol|2026-10-22
-379|Open Authorization|2026-10-22
-380|Security Assertion Markup Language|2026-10-22
-381|Identity provider|2026-10-22
-382|Kerberos|2026-10-22
-383|Key distribution center|2026-10-22
-384|Ticket granting ticket|2026-10-22
-385|Attestation|2026-10-22
-386|Mandatory access control|2026-10-22
-387|Discretionary access control|2026-10-22
-388|Role-based access control|2026-10-22
-389|Rule-based access control|2026-10-22
-390|Attribute-based access control|2026-10-22
-391|Time-of-day restrictions|2026-10-22
-392|Biometrics|2026-10-22
-393|Hardware token|2026-10-22
-394|Soft token|2026-10-22
-395|Security key|2026-10-22
-396|Something you know|2026-10-22
-397|Something you have|2026-10-22
-398|Something you are|2026-10-22
-399|Somewhere you are|2026-10-22
-400|Password manager|2026-10-22
-401|Passwordless|2026-10-22
-402|Password complexity|2026-10-22
-403|Privileged access management|2026-10-22
-404|Just-in-time permissions|2026-10-22
-405|Password vaulting|2026-10-22
-406|Ephemeral credentials|2026-10-22
-407|Password Authentication Protocol|2026-10-22
-408|HMAC-based one-time password|2026-10-22
-409|Time-based one-time password|2026-10-22
-410|Personal identity verification|2026-10-22
-411|Guardrails|2026-10-22
-412|Security group|2026-10-22
-413|Continuous integration|2026-10-22
-414|Application programming interface|2026-10-22
-415|SOAR|2026-10-22
-416|Single point of failure|2026-10-22
-417|Technical debt|2026-10-22
-418|Workforce multiplier|2026-10-22
-419|Incident response|2026-10-22
-420|Containment|2026-10-22
-421|Eradication|2026-10-22
-422|Lessons learned|2026-10-22
-423|Root cause analysis|2026-10-22
-424|Threat hunting|2026-10-22
-425|Digital forensics|2026-10-22
-426|Legal hold|2026-10-22
-427|Chain of custody|2026-10-22
-428|E-discovery|2026-10-22
-429|Computer emergency response team|2026-10-22
-430|Metadata|2026-10-22
-431|Packet capture|2026-10-22
-432|Dashboard|2026-10-22
-433|Acceptable use policy|2026-10-22
-434|Information security policy|2026-10-22
-435|Software development lifecycle|2026-10-22
-436|Playbook|2026-10-22
-437|Onboarding|2026-10-22
-438|Offboarding|2026-10-22
-439|Business continuity planning|2026-10-22
-440|Disaster recovery plan|2026-10-22
-441|Data owner|2026-10-22
-442|Data controller|2026-10-22
-443|Data processor|2026-10-22
-444|Data custodian|2026-10-22
-445|Data protection officer|2026-10-22
-446|Risk assessment|2026-10-22
-447|Qualitative risk analysis|2026-10-22
-448|Quantitative risk analysis|2026-10-22
-449|Single loss expectancy|2026-10-22
-450|Annualized loss expectancy|2026-10-22
-451|Annualized rate of occurrence|2026-10-22
-452|Key risk indicator|2026-10-22
-453|Risk owner|2026-10-22
-454|Risk threshold|2026-10-22
-455|Risk appetite|2026-10-22
-456|Risk acceptance|2026-10-22
-457|Risk avoidance|2026-10-22
-458|Risk mitigation|2026-10-22
-459|Business impact analysis|2026-10-22
-460|Recovery time objective|2026-10-22
-461|Recovery point objective|2026-10-22
-462|Mean time to repair|2026-10-22
-463|Mean time between failures|2026-10-22
-464|Mean time to failure|2026-10-22
-465|Right-to-audit clause|2026-10-22
-466|Supply chain analysis|2026-10-22
-467|Conflict of interest|2026-10-22
-468|Service-level agreement|2026-10-22
-469|Memorandum of agreement|2026-10-22
-470|Memorandum of understanding|2026-10-22
-471|Master service agreement|2026-10-22
-472|Statement of work|2026-10-22
-473|Non-disclosure agreement|2026-10-22
-474|Business partnership agreement|2026-10-22
-475|Rules of engagement|2026-10-22
-476|Managed security service provider|2026-10-22
-477|Due care|2026-10-22
-478|Right to be forgotten|2026-10-22
-479|Data subject|2026-10-22
-480|Data inventory|2026-10-22
-481|General Data Protection Regulation|2026-10-22
-482|PCI DSS|2026-10-22
-483|Audit committee|2026-10-22
-484|Self-assessment|2026-10-22
-485|Independent third-party audit|2026-10-22
-486|Known environment|2026-10-22
-487|Partially known environment|2026-10-22
-488|Unknown environment|2026-10-22
-489|Passive reconnaissance|2026-10-22
-490|Active reconnaissance|2026-10-22
-491|Phishing campaign|2026-10-22
-492|Situational awareness|2026-10-22
-493|Operational security|2026-10-22
-494|Security awareness training|2026-10-22
+26|Technical control|2026-10-21
+27|Managerial control|2026-10-21
+28|Operational control|2026-10-21
+29|Physical control|2026-10-21
+30|Preventive control|2026-10-21
+31|Deterrent control|2026-10-21
+32|Detective control|2026-10-21
+33|Corrective control|2026-10-21
+34|Compensating control|2026-10-21
+35|Directive control|2026-10-21
+36|CIA triad|2026-10-21
+37|Authentication authorization and accounting|2026-10-21
+38|Authentication|2026-10-21
+39|Authorization|2026-10-21
+40|Gap analysis|2026-10-21
+41|Control plane|2026-10-21
+42|Data plane|2026-10-21
+43|Adaptive identity|2026-10-21
+44|Threat scope reduction|2026-10-21
+45|Policy-driven access control|2026-10-21
+46|Policy administrator|2026-10-21
+47|Policy engine|2026-10-21
+48|Policy enforcement point|2026-10-21
+49|Implicit trust zone|2026-10-21
+50|Bollards|2026-10-21
+51|Access control vestibule|2026-10-21
+52|Fencing|2026-10-21
+53|Video surveillance|2026-10-21
+54|Closed-circuit television|2026-10-21
+55|Pan-tilt-zoom camera|2026-10-21
+56|Security guard|2026-10-21
+57|Access badge|2026-10-21
+58|Infrared sensor|2026-10-21
+59|Pressure sensor|2026-10-21
+60|Microwave sensor|2026-10-21
+61|Ultrasonic sensor|2026-10-21
+62|Honeynet|2026-10-21
+63|Honeyfile|2026-10-21
+64|Honeytoken|2026-10-21
+65|Change management|2026-10-21
+66|Impact analysis|2026-10-21
+67|Backout plan|2026-10-21
+68|Maintenance window|2026-10-21
+69|Standard operating procedure|2026-10-21
+70|Allow list|2026-10-21
+71|Deny list|2026-10-21
+72|Stakeholder|2026-10-21
+73|Downtime|2026-10-21
+74|Legacy application|2026-10-21
+75|Dependency|2026-10-21
+76|Version control|2026-10-21
+77|Public key|2026-10-21
+78|Private key|2026-10-21
+79|Key escrow|2026-10-21
+80|Encryption|2026-10-21
+81|Full-disk encryption|2026-10-21
+82|Database encryption|2026-10-21
+83|Transport encryption|2026-10-21
+84|Asymmetric encryption|2026-10-21
+85|Symmetric encryption|2026-10-21
+86|Key exchange|2026-10-21
+87|Key length|2026-10-21
+88|Trusted Platform Module|2026-10-21
+89|Hardware security module|2026-10-21
+90|Key management system|2026-10-21
+91|Secure enclave|2026-10-21
+92|Self-encrypting drive|2026-10-21
+93|Obfuscation|2026-10-21
+94|Steganography|2026-10-21
+95|Tokenization|2026-10-21
+96|Data masking|2026-10-21
+97|Hashing|2026-10-21
+98|Salting|2026-10-21
+99|Digital signature|2026-10-21
+100|Key stretching|2026-10-21
+101|Blockchain|2026-10-21
+102|Open public ledger|2026-10-21
+103|Digital certificate|2026-10-21
+104|Certificate authority|2026-10-21
+105|Registration authority|2026-10-21
+106|Certificate revocation list|2026-10-21
+107|Online Certificate Status Protocol|2026-10-21
+108|Self-signed certificate|2026-10-21
+109|Wildcard certificate|2026-10-21
+110|Subject alternative name|2026-10-21
+111|Certificate signing request|2026-10-21
+112|Root of trust|2026-10-21
+113|Advanced Encryption Standard|2026-10-21
+114|Data Encryption Standard|2026-10-21
+115|Rivest Shamir Adleman|2026-10-21
+116|Elliptic curve cryptography|2026-10-21
+117|Diffie-Hellman ephemeral|2026-10-21
+118|Digital Signature Algorithm|2026-10-21
+119|Message Digest 5|2026-10-21
+120|Secure Hash Algorithm|2026-10-21
+121|Hash-based message authentication code|2026-10-21
+122|Initialization vector|2026-10-21
+123|Perfect forward secrecy|2026-10-21
+124|Password-Based Key Derivation Function 2|2026-10-21
+125|Galois/Counter Mode|2026-10-21
+126|Electronic codebook|2026-10-21
+127|Cipher block chaining|2026-10-21
+128|Rivest Cipher 4|2026-10-21
+129|Exclusive OR|2026-10-21
+130|Threat actor|2026-10-21
+131|Nation-state|2026-10-21
+132|Unskilled attacker|2026-10-21
+133|Hacktivist|2026-10-21
+134|Insider threat|2026-10-21
+135|Organized crime|2026-10-21
+136|Shadow IT|2026-10-21
+137|Advanced persistent threat|2026-10-21
+138|Data exfiltration|2026-10-21
+139|Espionage|2026-10-21
+140|Threat vector|2026-10-21
+141|Vishing|2026-10-21
+142|Smishing|2026-10-21
+143|Removable media|2026-10-21
+144|Default credentials|2026-10-21
+145|Open port|2026-10-21
+146|Supply chain attack|2026-10-21
+147|Managed service provider|2026-10-21
+148|Social engineering|2026-10-21
+149|Misinformation|2026-10-21
+150|Disinformation|2026-10-21
+151|Impersonation|2026-10-21
+152|Business email compromise|2026-10-21
+153|Pretexting|2026-10-21
+154|Watering hole attack|2026-10-21
+155|Brand impersonation|2026-10-21
+156|Typosquatting|2026-10-21
+157|Memory injection|2026-10-21
+158|Buffer overflow|2026-10-21
+159|Race condition|2026-10-21
+160|Time-of-check to time-of-use|2026-10-21
+161|Malicious update|2026-10-21
+162|Cross-site scripting|2026-10-21
+163|Firmware|2026-10-21
+164|End-of-life|2026-10-21
+165|Virtual machine escape|2026-10-21
+166|Resource reuse|2026-10-21
+167|Misconfiguration|2026-10-21
+168|Sideloading|2026-10-21
+169|Jailbreaking|2026-10-21
+170|Trojan|2026-10-21
+171|Worm|2026-10-21
+172|Spyware|2026-10-21
+173|Bloatware|2026-10-21
+174|Virus|2026-10-21
+175|Keylogger|2026-10-21
+176|Logic bomb|2026-10-21
+177|Rootkit|2026-10-21
+178|Remote access Trojan|2026-10-21
+179|Potentially unwanted program|2026-10-21
+180|RFID cloning|2026-10-21
+181|Denial-of-service|2026-10-21
+182|Distributed denial-of-service|2026-10-21
+183|Amplification attack|2026-10-21
+184|DNS poisoning|2026-10-21
+185|ARP poisoning|2026-10-21
+186|On-path attack|2026-10-21
+187|Credential replay|2026-10-21
+188|Replay attack|2026-10-21
+189|Privilege escalation|2026-10-21
+190|Cross-site request forgery|2026-10-21
+191|Directory traversal|2026-10-21
+192|Downgrade attack|2026-10-21
+193|Hash collision|2026-10-21
+194|Birthday attack|2026-10-21
+195|Password spraying|2026-10-21
+196|Account lockout|2026-10-21
+197|Impossible travel|2026-10-21
+198|Concurrent session usage|2026-10-21
+199|Indicators of compromise|2026-10-21
+200|Network segmentation|2026-10-21
+201|Access control list|2026-10-21
+202|Application allow list|2026-10-21
+203|Isolation|2026-10-21
+204|Patching|2026-10-21
+205|Least privilege|2026-10-21
+206|Configuration enforcement|2026-10-21
+207|Decommissioning|2026-10-21
+208|System hardening|2026-10-21
+209|Host-based firewall|2026-10-21
+210|Host-based intrusion prevention system|2026-10-21
+211|Host-based intrusion detection system|2026-10-21
+212|Data execution prevention|2026-10-21
+213|Address space layout randomization|2026-10-21
+214|Responsibility matrix|2026-10-21
+215|Hybrid cloud|2026-10-21
+216|Infrastructure as code|2026-10-21
+217|Serverless|2026-10-21
+218|Microservices|2026-10-21
+219|Air gap|2026-10-21
+220|Logical segmentation|2026-10-21
+221|Software-defined networking|2026-10-21
+222|On-premises|2026-10-21
+223|Containerization|2026-10-21
+224|Internet of Things|2026-10-21
+225|Industrial control system|2026-10-21
+226|Supervisory control and data acquisition|2026-10-21
+227|Real-time operating system|2026-10-21
+228|Embedded system|2026-10-21
+229|High availability|2026-10-21
+230|Scalability|2026-10-21
+231|Risk transference|2026-10-21
+232|Virtual private cloud|2026-10-21
+233|Infrastructure as a service|2026-10-21
+234|Platform as a service|2026-10-21
+235|Software as a service|2026-10-21
+236|Cloud service provider|2026-10-21
+237|Virtual machine|2026-10-21
+238|Virtual desktop infrastructure|2026-10-21
+239|Security zone|2026-10-21
+240|Attack surface|2026-10-21
+241|Fail-open|2026-10-21
+242|Fail-closed|2026-10-21
+243|Network tap|2026-10-21
+244|Jump server|2026-10-21
+245|Proxy server|2026-10-21
+246|Intrusion prevention system|2026-10-21
+247|Intrusion detection system|2026-10-21
+248|Load balancer|2026-10-21
+249|Port security|2026-10-21
+250|Extensible Authentication Protocol|2026-10-21
+251|Web application firewall|2026-10-21
+252|Unified threat management|2026-10-21
+253|Next-generation firewall|2026-10-21
+254|Tunneling|2026-10-21
+255|Transport Layer Security|2026-10-21
+256|Secure Sockets Layer|2026-10-21
+257|Internet Protocol Security|2026-10-21
+258|Authentication Header|2026-10-21
+259|Encapsulating Security Payload|2026-10-21
+260|Internet Key Exchange|2026-10-21
+261|Layer 2 Tunneling Protocol|2026-10-21
+262|Point-to-Point Tunneling Protocol|2026-10-21
+263|Secure access service edge|2026-10-21
+264|Virtual local area network|2026-10-21
+265|Secure web gateway|2026-10-21
+266|Network address translation|2026-10-21
+267|Regulated data|2026-10-21
+268|Trade secret|2026-10-21
+269|Intellectual property|2026-10-21
+270|Data classification|2026-10-21
+271|Data at rest|2026-10-21
+272|Data in transit|2026-10-21
+273|Data in use|2026-10-21
+274|Data sovereignty|2026-10-21
+275|Geolocation|2026-10-21
+276|Personally identifiable information|2026-10-21
+277|Protected health information|2026-10-21
+278|Clustering|2026-10-21
+279|Hot site|2026-10-21
+280|Cold site|2026-10-21
+281|Warm site|2026-10-21
+282|Geographic dispersion|2026-10-21
+283|Platform diversity|2026-10-21
+284|Multi-cloud|2026-10-21
+285|Continuity of operations|2026-10-21
+286|Capacity planning|2026-10-21
+287|Failover|2026-10-21
+288|Offsite backup|2026-10-21
+289|Snapshot|2026-10-21
+290|Replication|2026-10-21
+291|Journaling|2026-10-21
+292|Generator|2026-10-21
+293|Uninterruptible power supply|2026-10-21
+294|Power distribution unit|2026-10-21
+295|Redundant array of independent disks|2026-10-21
+296|Secure baseline|2026-10-21
+297|Site survey|2026-10-21
+298|Heat map|2026-10-21
+299|Mobile device management|2026-10-21
+300|Unified endpoint management|2026-10-21
+301|Bring your own device|2026-10-21
+302|Corporate-owned personally enabled|2026-10-21
+303|Choose your own device|2026-10-21
+304|Wi-Fi Protected Access 3|2026-10-21
+305|Simultaneous authentication of equals|2026-10-21
+306|Wired Equivalent Privacy|2026-10-21
+307|Wi-Fi Protected Setup|2026-10-21
+308|Remote Authentication Dial-In User Service|2026-10-21
+309|Near-field communication|2026-10-21
+310|Input validation|2026-10-21
+311|Secure cookie|2026-10-21
+312|Static code analysis|2026-10-21
+313|Code signing|2026-10-21
+314|CAPTCHA|2026-10-21
+315|Unified Extensible Firmware Interface|2026-10-21
+316|Basic input/output system|2026-10-21
+317|Asset inventory|2026-10-21
+318|Enumeration|2026-10-21
+319|Sanitization|2026-10-21
+320|Data destruction|2026-10-21
+321|Certificate of destruction|2026-10-21
+322|Data retention|2026-10-21
+323|Vulnerability scan|2026-10-21
+324|Dynamic analysis|2026-10-21
+325|Package monitoring|2026-10-21
+326|Threat feed|2026-10-21
+327|Open-source intelligence|2026-10-21
+328|Dark web|2026-10-21
+329|Responsible disclosure|2026-10-21
+330|Bug bounty|2026-10-21
+331|False positive|2026-10-21
+332|False negative|2026-10-21
+333|Common Vulnerability Scoring System|2026-10-21
+334|Common Vulnerabilities and Exposures|2026-10-21
+335|Exposure factor|2026-10-21
+336|Risk tolerance|2026-10-21
+337|Cyber insurance|2026-10-21
+338|Structured Threat Information Expression|2026-10-21
+339|Automated Indicator Sharing|2026-10-21
+340|Log aggregation|2026-10-21
+341|Alert tuning|2026-10-21
+342|Quarantine|2026-10-21
+343|Agentless|2026-10-21
+344|Antivirus|2026-10-21
+345|Security Content Automation Protocol|2026-10-21
+346|SNMP trap|2026-10-21
+347|NetFlow|2026-10-21
+348|Security operations center|2026-10-21
+349|Firewall|2026-10-21
+350|Screened subnet|2026-10-21
+351|Signature-based detection|2026-10-21
+352|Web filter|2026-10-21
+353|Group Policy|2026-10-21
+354|SELinux|2026-10-21
+355|DNS filtering|2026-10-21
+356|DMARC|2026-10-21
+357|DomainKeys Identified Mail|2026-10-21
+358|Sender Policy Framework|2026-10-21
+359|File integrity monitoring|2026-10-21
+360|Network access control|2026-10-21
+361|Extended detection and response|2026-10-21
+362|User behavior analytics|2026-10-21
+363|Remotely triggered black hole|2026-10-21
+364|Domain Name System|2026-10-21
+365|Secure Shell|2026-10-21
+366|SSH File Transfer Protocol|2026-10-21
+367|File Transfer Protocol Secure|2026-10-21
+368|Hypertext Transfer Protocol Secure|2026-10-21
+369|Secure Real-time Transport Protocol|2026-10-21
+370|S/MIME|2026-10-21
+371|Pretty Good Privacy|2026-10-21
+372|GNU Privacy Guard|2026-10-21
+373|Account provisioning|2026-10-21
+374|Deprovisioning|2026-10-21
+375|Identity proofing|2026-10-21
+376|Federation|2026-10-21
+377|Single sign-on|2026-10-21
+378|Lightweight Directory Access Protocol|2026-10-21
+379|Open Authorization|2026-10-21
+380|Security Assertion Markup Language|2026-10-21
+381|Identity provider|2026-10-21
+382|Kerberos|2026-10-21
+383|Key distribution center|2026-10-21
+384|Ticket granting ticket|2026-10-21
+385|Attestation|2026-10-21
+386|Mandatory access control|2026-10-21
+387|Discretionary access control|2026-10-21
+388|Role-based access control|2026-10-21
+389|Rule-based access control|2026-10-21
+390|Attribute-based access control|2026-10-21
+391|Time-of-day restrictions|2026-10-21
+392|Biometrics|2026-10-21
+393|Hardware token|2026-10-21
+394|Soft token|2026-10-21
+395|Security key|2026-10-21
+396|Something you know|2026-10-21
+397|Something you have|2026-10-21
+398|Something you are|2026-10-21
+399|Somewhere you are|2026-10-21
+400|Password manager|2026-10-21
+401|Passwordless|2026-10-21
+402|Password complexity|2026-10-21
+403|Privileged access management|2026-10-21
+404|Just-in-time permissions|2026-10-21
+405|Password vaulting|2026-10-21
+406|Ephemeral credentials|2026-10-21
+407|Password Authentication Protocol|2026-10-21
+408|HMAC-based one-time password|2026-10-21
+409|Time-based one-time password|2026-10-21
+410|Personal identity verification|2026-10-21
+411|Guardrails|2026-10-21
+412|Security group|2026-10-21
+413|Continuous integration|2026-10-21
+414|Application programming interface|2026-10-21
+415|SOAR|2026-10-21
+416|Single point of failure|2026-10-21
+417|Technical debt|2026-10-21
+418|Workforce multiplier|2026-10-21
+419|Incident response|2026-10-21
+420|Containment|2026-10-21
+421|Eradication|2026-10-21
+422|Lessons learned|2026-10-21
+423|Root cause analysis|2026-10-21
+424|Threat hunting|2026-10-21
+425|Digital forensics|2026-10-21
+426|Legal hold|2026-10-21
+427|Chain of custody|2026-10-21
+428|E-discovery|2026-10-21
+429|Computer emergency response team|2026-10-21
+430|Metadata|2026-10-21
+431|Packet capture|2026-10-21
+432|Dashboard|2026-10-21
+433|Acceptable use policy|2026-10-21
+434|Information security policy|2026-10-21
+435|Software development lifecycle|2026-10-21
+436|Playbook|2026-10-21
+437|Onboarding|2026-10-21
+438|Offboarding|2026-10-21
+439|Business continuity planning|2026-10-21
+440|Disaster recovery plan|2026-10-21
+441|Data owner|2026-10-21
+442|Data controller|2026-10-21
+443|Data processor|2026-10-21
+444|Data custodian|2026-10-21
+445|Data protection officer|2026-10-21
+446|Risk assessment|2026-10-21
+447|Qualitative risk analysis|2026-10-21
+448|Quantitative risk analysis|2026-10-21
+449|Single loss expectancy|2026-10-21
+450|Annualized loss expectancy|2026-10-21
+451|Annualized rate of occurrence|2026-10-21
+452|Key risk indicator|2026-10-21
+453|Risk owner|2026-10-21
+454|Risk threshold|2026-10-21
+455|Risk appetite|2026-10-21
+456|Risk acceptance|2026-10-21
+457|Risk avoidance|2026-10-21
+458|Risk mitigation|2026-10-21
+459|Business impact analysis|2026-10-21
+460|Recovery time objective|2026-10-21
+461|Recovery point objective|2026-10-21
+462|Mean time to repair|2026-10-21
+463|Mean time between failures|2026-10-21
+464|Mean time to failure|2026-10-21
+465|Right-to-audit clause|2026-10-21
+466|Supply chain analysis|2026-10-21
+467|Conflict of interest|2026-10-21
+468|Service-level agreement|2026-10-21
+469|Memorandum of agreement|2026-10-21
+470|Memorandum of understanding|2026-10-21
+471|Master service agreement|2026-10-21
+472|Statement of work|2026-10-21
+473|Non-disclosure agreement|2026-10-21
+474|Business partnership agreement|2026-10-21
+475|Rules of engagement|2026-10-21
+476|Managed security service provider|2026-10-21
+477|Due care|2026-10-21
+478|Right to be forgotten|2026-10-21
+479|Data subject|2026-10-21
+480|Data inventory|2026-10-21
+481|General Data Protection Regulation|2026-10-21
+482|PCI DSS|2026-10-21
+483|Audit committee|2026-10-21
+484|Self-assessment|2026-10-21
+485|Independent third-party audit|2026-10-21
+486|Known environment|2026-10-21
+487|Partially known environment|2026-10-21
+488|Unknown environment|2026-10-21
+489|Passive reconnaissance|2026-10-21
+490|Active reconnaissance|2026-10-21
+491|Phishing campaign|2026-10-21
+492|Situational awareness|2026-10-21
+493|Operational security|2026-10-21
+494|Security awareness training|2026-10-21

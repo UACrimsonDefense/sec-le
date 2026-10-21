@@ -4,6 +4,7 @@
 	"license": "MIT",
 	"version": "0.0.1",
 	"type": "module",
+	"packageManager": "pnpm@12.9.0",
 	"scripts": {
 		"data": "node scripts/build-data.ts && node --env-file-if-exists=.env.seed scripts/build-schedule.ts",
 		"dev": "pnpm data && vite dev",
