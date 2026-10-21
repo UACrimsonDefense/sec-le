@@ -72,9 +72,30 @@
 	let choosing = $state(false);
 	let showResult = $state(false);
 	let copied = $state(false);
+	let now = $state(Date.now());
 	let waiting = false;
 
 	let section = $derived(daily ? 'daily' : 'play');
+	let left = $derived(timeLeft(now));
+
+	$effect(() => {
+		if (!daily) return;
+		const timer = setInterval(() => (now = Date.now()), 1000);
+		return () => clearInterval(timer);
+	});
+
+	function timeLeft(now: number): number {
+		const parts = date.split('-');
+		const next = new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]) + 1);
+		return next.getTime() - now;
+	}
+
+	function countdown(ms: number): string {
+		const seconds = Math.ceil(ms / 1000);
+		const hours = Math.floor(seconds / 3600);
+		const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
+		return `${hours}:${minutes}:${String(seconds % 60).padStart(2, '0')}`;
+	}
 	let title = $derived(pageTitle(daily, mode));
 	let total = $derived(countLetters(shape));
 	let keyColors = $derived(getKeyColors(guesses));
@@ -330,7 +351,8 @@
 	}
 
 	function emoji(color: Color): string {
-		if (color === 'correct') return '🟩';
+		const colorblind = document.documentElement.dataset.colorblind !== undefined;
+		if (color === 'correct') return colorblind ? '🟦' : '🟩';
 		if (color === 'present') return '🟨';
 		return '⬛';
 	}
@@ -385,6 +407,7 @@
 	}
 
 	function onkeydown(e: KeyboardEvent) {
+		if (document.querySelector('dialog[open]')) return;
 		if (e.ctrlKey || e.metaKey || e.altKey) return;
 		const key = e.key.toUpperCase();
 		if (e.target instanceof HTMLSelectElement) {
@@ -426,6 +449,11 @@
 	{#if daily}
 		<button class="play-again" onclick={share}>{copied ? 'Copied!' : 'Share'}</button>
 		<a class="button" href="/play/{mode}">Play unlimited</a>
+		{#if left > 0}
+			<p class="note" role="timer">Next puzzle in {countdown(left)}</p>
+		{:else}
+			<p><a href="/daily/{mode}" data-sveltekit-reload>Play today's puzzle</a></p>
+		{/if}
 	{:else}
 		<button class="play-again" onclick={start}>Play again</button>
 	{/if}

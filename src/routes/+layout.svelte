@@ -1,26 +1,13 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import favicon from '#lib/assets/favicon.svg';
+	import Help from '#lib/components/Help.svelte';
+	import Settings from '#lib/components/Settings.svelte';
 	import type { LayoutProps } from './$types';
 
 	let { children }: LayoutProps = $props();
 
 	const description =
 		'A Wordle-style game for Security+ (SY0-701) terms. Guess the term, unlock hints and find your weak exam domains.';
-
-	let theme = $state('light');
-
-	onMount(() => {
-		const saved = document.documentElement.dataset.theme;
-		if (saved) theme = saved;
-	});
-
-	function changeTheme() {
-		document.documentElement.dataset.theme = theme;
-		try {
-			localStorage.setItem('theme', theme);
-		} catch {}
-	}
 </script>
 
 <svelte:head>
@@ -39,12 +26,9 @@
 </svelte:head>
 
 <header>
+	<Help />
 	<a href="/stats">Stats</a>
-	<select aria-label="Theme" bind:value={theme} onchange={changeTheme}>
-		<option value="light">Light</option>
-		<option value="dark">Dark</option>
-		<option value="crimson">Crimson Defense</option>
-	</select>
+	<Settings />
 </header>
 
 {@render children()}
@@ -114,6 +98,10 @@
 		--font: 'Kumbh Sans', sans-serif;
 		--heading-font: 'Roboto Slab', serif;
 	}
+	:global(:root[data-colorblind]) {
+		--green: #0072b2;
+		--yellow: #f0e442;
+	}
 	:global(body) {
 		display: flex;
 		flex-direction: column;
@@ -171,13 +159,5 @@
 	}
 	header a {
 		color: var(--text);
-	}
-	select {
-		font: inherit;
-		background: var(--bg);
-		color: var(--text);
-		border: 1px solid var(--border);
-		border-radius: 4px;
-		padding: 4px;
 	}
 </style>
