@@ -1,9 +1,18 @@
 <script lang="ts">
 	import type { Shape, Guess, Cell, Color } from '#lib/types.js';
+	import { FLIP_MS, BOUNCE_MS, stepMs, revealMs } from '#lib/motion.js';
 	import Row from './Row.svelte';
 
-	type Props = { shape: Shape; guesses: Guess[]; current: string; max: number };
-	let { shape, guesses, current, max }: Props = $props();
+	type Props = {
+		shape: Shape;
+		guesses: Guess[];
+		current: string;
+		max: number;
+		reveal: number;
+		won: boolean;
+		shake: boolean;
+	};
+	let { shape, guesses, current, max, reveal, won, shake }: Props = $props();
 
 	const MAX = 48;
 	const MIN = 32;
@@ -16,6 +25,18 @@
 	let width = $state(0);
 	let lines = $derived(makeLines(shape, width));
 	let size = $derived(tileSize(lines, width));
+	let tiles = $derived(countTiles(shape));
+	let timing = $derived(
+		`--flip: ${FLIP_MS}ms; --bounce: ${BOUNCE_MS}ms; --step: ${stepMs(tiles)}ms; --reveal: ${revealMs(tiles)}ms`
+	);
+
+	function countTiles(shape: Shape): number {
+		let count = 0;
+		for (const part of shape) {
+			if (part !== ' ') count += part;
+		}
+		return count;
+	}
 
 	function cellWidth(cell: Cell, size: number): number {
 		if (cell.gap) return WORD_GAP;
@@ -118,13 +139,19 @@
 	class:wrapped={lines.length > 1}
 	aria-hidden="true"
 	bind:clientWidth={width}
-	style="--size: {size}px"
+	style="--size: {size}px; {timing}"
 >
 	{#each { length: max }, r}
 		{#if r < guesses.length}
-			<Row {lines} text={guesses[r].text} colors={guesses[r].colors} />
+			<Row
+				{lines}
+				text={guesses[r].text}
+				colors={guesses[r].colors}
+				reveal={r === reveal}
+				win={r === reveal && won}
+			/>
 		{:else if r === guesses.length}
-			<Row {lines} text={current} colors={[]} />
+			<Row {lines} text={current} colors={[]} {shake} />
 		{:else}
 			<Row {lines} text="" colors={[]} />
 		{/if}

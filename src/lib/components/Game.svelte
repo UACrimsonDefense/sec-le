@@ -18,6 +18,7 @@
 	import Keyboard from '#lib/components/Keyboard.svelte';
 	import HintPanel from '#lib/components/HintPanel.svelte';
 	import Modal from '#lib/components/Modal.svelte';
+	import { SHAKE_MS, revealMs, winMs, reducedMotion } from '#lib/motion.js';
 
 	type Props = { mode: Mode; daily: boolean };
 	type Status = 'loading' | 'playing' | Result;
@@ -73,7 +74,12 @@
 	let showResult = $state(false);
 	let copied = $state(false);
 	let now = $state(Date.now());
+	let reveal = $state(-1);
+	let shown = $state(0);
+	let shaking = $state(false);
 	let waiting = false;
+	let timers: ReturnType<typeof setTimeout>[] = [];
+	let shakeTimer: ReturnType<typeof setTimeout> | undefined;
 
 	let section = $derived(daily ? 'daily' : 'play');
 	let left = $derived(timeLeft(now));
@@ -98,7 +104,24 @@
 	}
 	let title = $derived(pageTitle(daily, mode));
 	let total = $derived(countLetters(shape));
-	let keyColors = $derived(getKeyColors(guesses));
+	let keyColors = $derived(getKeyColors(guesses.slice(0, shown)));
+
+	function later(run: () => void, ms: number) {
+		if (reducedMotion()) ms = 0;
+		timers.push(setTimeout(run, ms));
+	}
+
+	function clearTimers() {
+		for (const timer of timers) clearTimeout(timer);
+		timers = [];
+	}
+
+	function shakeRow() {
+		if (reducedMotion()) return;
+		clearTimeout(shakeTimer);
+		shaking = true;
+		shakeTimer = setTimeout(() => (shaking = false), SHAKE_MS);
+	}
 
 	function countLetters(shape: Shape): number {
 		let count = 0;
@@ -183,6 +206,8 @@
 			gameDomain = game.domain ?? '';
 			hints = game.hints;
 			guesses = game.guesses;
+			shown = guesses.length;
+			reveal = -1;
 			status = game.status;
 			answer = game.answer;
 			showResult = status !== 'playing';
@@ -270,6 +295,9 @@
 		gameDomain = domain;
 		hints = g.hints;
 		guesses = [];
+		shown = 0;
+		reveal = -1;
+		clearTimers();
 		current = '';
 		status = 'playing';
 		answer = '';
@@ -289,7 +317,10 @@
 
 	async function submit() {
 		if (waiting) return;
-		if (current.length !== total) return;
+		if (current.length !== total) {
+			shakeRow();
+			return;
+		}
 
 		waiting = true;
 		const res = await fetch('/api/game/guess', {
@@ -306,6 +337,7 @@
 		waiting = false;
 		if (res.status === 422) {
 			message = 'Not in word list';
+			shakeRow();
 			return;
 		}
 		if (!res.ok) return;
@@ -314,12 +346,15 @@
 		guesses.push({ text: current, colors: r.colors });
 		current = '';
 		hints = r.hints;
+		reveal = guesses.length - 1;
+		const count = guesses.length;
+		later(() => (shown = count), revealMs(total));
 		if (r.answer) {
 			answer = r.answer;
 			termId = r.termId ?? termId;
 			if (r.solved) status = 'won';
 			else status = 'lost';
-			showResult = true;
+			later(() => (showResult = true), r.solved ? winMs(total) : revealMs(total));
 			record(r.objective ?? '');
 		}
 		save();
@@ -511,7 +546,7 @@
 	{/if}
 	<p class="message" role="status">{message}</p>
 
-	<Board {shape} {guesses} {current} {max} />
+	<Board {shape} {guesses} {current} {max} {reveal} won={status === 'won'} shake={shaking} />
 
 	{#if status === 'playing' && !daily}
 		<button class="skip" onclick={skip}>Skip</button>
