@@ -28,7 +28,7 @@ function game(t: Term, termId: number, day: number, mode: Mode, difficulty: Diff
 	};
 }
 
-export function GET({ url, platform }) {
+export function GET({ url }) {
 	const mode = url.searchParams.get('mode');
 	const difficulty = url.searchParams.get('difficulty');
 	const date = url.searchParams.get('date');
@@ -47,7 +47,7 @@ export function GET({ url, platform }) {
 		if (!isAllowedDate(date)) error(400, 'Bad date');
 		const t = dailyTerm(date, mode);
 		if (!t) error(404, 'No puzzle today');
-		track(platform, 'start', 'daily', mode, date, difficulty, 0);
+		track('start', 'daily', mode, date, difficulty, 0);
 		return json(game(t, 0, dayNumber(date), mode, difficulty));
 	}
 
@@ -62,6 +62,6 @@ export function GET({ url, platform }) {
 	while (pool.length > 1 && t.id === Number(last)) {
 		t = pick(pool);
 	}
-	track(platform, 'start', 'unlimited', mode, '', difficulty, 0);
+	track('start', 'unlimited', mode, '', difficulty, 0);
 	return json(game(t, t.id, 0, mode, difficulty));
 }

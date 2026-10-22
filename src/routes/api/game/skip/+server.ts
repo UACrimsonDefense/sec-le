@@ -5,7 +5,7 @@ import type { SkipBody, SkipResult } from '#lib/types.js';
 
 export const prerender = false;
 
-export async function POST({ request, platform }) {
+export async function POST({ request }) {
 	if (Number(request.headers.get('content-length')) > 100) error(413, 'Too large');
 
 	const body = (await request.json().catch(() => null)) as Partial<SkipBody> | null;
@@ -14,7 +14,7 @@ export async function POST({ request, platform }) {
 
 	const t = terms.find((t) => t.id === termId);
 	if (!t) error(400, 'Unknown term');
-	track(platform, 'skip', 'unlimited', '', '', '', 0);
+	track('skip', 'unlimited', '', '', '', 0);
 
 	return json({
 		answer: t.term,
