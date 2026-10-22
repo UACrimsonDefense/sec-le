@@ -38,6 +38,17 @@ echo 'DAILY_SEED=local' > .env.seed
 
 `pnpm dev` works without it.
 
+## Player stats
+
+The API counts each puzzle started, won, lost or skipped in Workers Analytics Engine. It records only the event, daily or unlimited, mode, date, difficulty and guess count, never anything about the player. Data is kept for three months.
+
+To see players per day, create a Cloudflare API token with only the **Account Analytics: Read** permission. Put it in a file named `.env.stats` (ignored by git) as one line, `CLOUDFLARE_STATS_TOKEN=` followed by the token. Then:
+
+```sh
+pnpm stats      # last 14 days
+pnpm stats 30   # last 30 days
+```
+
 ## Terms
 
 All terms live in [`data/terms.csv`](data/terms.csv). To fix or suggest one, open an issue or use "Report this definition" at the end of a game. Pull requests are welcome too:

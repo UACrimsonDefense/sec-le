@@ -10,12 +10,13 @@ import {
 import { score } from '#lib/server/score.js';
 import { isValidGuess } from '#lib/server/dictionary.js';
 import { isAllowedDate, dailyTerm } from '#lib/server/daily.js';
+import { track } from '#lib/server/stats.js';
 import type { Term } from '#lib/server/terms.js';
 import type { GuessBody, GuessResult } from '#lib/types.js';
 
 export const prerender = false;
 
-export async function POST({ request }) {
+export async function POST({ request, platform }) {
 	if (Number(request.headers.get('content-length')) > 200) error(413, 'Too large');
 
 	const body = (await request.json().catch(() => null)) as Partial<GuessBody> | null;
@@ -50,6 +51,10 @@ export async function POST({ request }) {
 	const colors = score(guess, t.term);
 	const solved = guess === answer;
 	const over = solved || guessNumber === maxGuesses(t.term);
+	if (over) {
+		const kind = date === '' ? 'unlimited' : 'daily';
+		track(platform, solved ? 'win' : 'loss', kind, mode, date, difficulty, guessNumber);
+	}
 
 	return json({
 		colors,

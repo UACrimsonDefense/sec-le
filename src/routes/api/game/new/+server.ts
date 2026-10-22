@@ -8,6 +8,7 @@ import {
 	unlockedHints
 } from '#lib/server/terms.js';
 import { isAllowedDate, dailyTerm, dayNumber } from '#lib/server/daily.js';
+import { track } from '#lib/server/stats.js';
 import type { Term } from '#lib/server/terms.js';
 import type { Mode, Difficulty, NewGame } from '#lib/types.js';
 
@@ -27,7 +28,7 @@ function game(t: Term, termId: number, day: number, mode: Mode, difficulty: Diff
 	};
 }
 
-export function GET({ url }) {
+export function GET({ url, platform }) {
 	const mode = url.searchParams.get('mode');
 	const difficulty = url.searchParams.get('difficulty');
 	const date = url.searchParams.get('date');
@@ -46,6 +47,7 @@ export function GET({ url }) {
 		if (!isAllowedDate(date)) error(400, 'Bad date');
 		const t = dailyTerm(date, mode);
 		if (!t) error(404, 'No puzzle today');
+		track(platform, 'start', 'daily', mode, date, difficulty, 0);
 		return json(game(t, 0, dayNumber(date), mode, difficulty));
 	}
 
@@ -60,5 +62,6 @@ export function GET({ url }) {
 	while (pool.length > 1 && t.id === Number(last)) {
 		t = pick(pool);
 	}
+	track(platform, 'start', 'unlimited', mode, '', difficulty, 0);
 	return json(game(t, t.id, 0, mode, difficulty));
 }
