@@ -71,6 +71,7 @@
 	let answer = $state('');
 	let message = $state('');
 	let choosing = $state(false);
+	let hasPreferred = $state(false);
 	let showResult = $state(false);
 	let copied = $state(false);
 	let now = $state(Date.now());
@@ -474,9 +475,9 @@
 			saveKey = `play-${mode}-current`;
 			loadDomain();
 		}
-		const hasPreferred = loadPreferred();
+		hasPreferred = loadPreferred();
 		if (loadGame()) return;
-		if (hasPreferred) start();
+		if (hasPreferred && !daily) start();
 		else choosing = true;
 	});
 </script>
@@ -526,23 +527,23 @@
 			>
 		</nav>
 	</div>
-	<div class="filters">
-		<select aria-label="Difficulty" bind:value={preferred} onchange={savePreferred}>
-			{#each levels as level}
-				<option value={level.value}>{level.name}</option>
-			{/each}
-		</select>
-		{#if !daily}
+	{#if !daily}
+		<div class="filters">
+			<select aria-label="Difficulty" bind:value={preferred} onchange={savePreferred}>
+				{#each levels as level}
+					<option value={level.value}>{level.name}</option>
+				{/each}
+			</select>
 			<select aria-label="Domain" bind:value={domain} onchange={changeDomain}>
 				{#each domains as d}
 					<option value={d.value}>{d.name}</option>
 				{/each}
 			</select>
-		{/if}
-	</div>
+		</div>
+	{/if}
 	<HintPanel {hints} />
-	{#if status === 'playing' && (preferred !== difficulty || domain !== gameDomain)}
-		<p class="note">{daily ? 'Changes start tomorrow' : 'Changes start next game'}</p>
+	{#if status === 'playing' && !daily && (preferred !== difficulty || domain !== gameDomain)}
+		<p class="note">Changes start next game</p>
 	{/if}
 	<p class="message" role="status">{message}</p>
 
@@ -559,11 +560,18 @@
 
 {#if choosing}
 	<Modal title="Pick a difficulty">
-		<p>You can change it later from the menu.</p>
+		<p>{daily ? "It's locked in for today's puzzle." : 'You can change it later from the menu.'}</p>
 		{#each levels as level}
-			<button class="level" onclick={() => choose(level.value)}>
+			<button
+				class="level"
+				class:last={hasPreferred && level.value === preferred}
+				onclick={() => choose(level.value)}
+			>
 				<b>{level.name}</b>
 				<span>{level.about}</span>
+				{#if hasPreferred && level.value === preferred}
+					<span>Your last pick</span>
+				{/if}
 			</button>
 		{/each}
 	</Modal>
@@ -652,6 +660,10 @@
 		margin-bottom: 8px;
 		background: var(--key);
 		color: var(--text);
+	}
+	.level.last {
+		outline: 2px solid var(--text);
+		outline-offset: -2px;
 	}
 	.level span {
 		display: block;
