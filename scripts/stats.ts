@@ -1,12 +1,23 @@
 import { readFileSync } from 'node:fs';
 
-type Row = { day: string; kind: string; mode: string; started: number; won: number; lost: number };
+type Row = {
+	day: string;
+	kind: string;
+	mode: string;
+	started: number;
+	won: number;
+	lost: number;
+	skipped: number;
+};
 type Day = {
 	term: number;
 	acronym: number;
 	finished: number;
 	won: number;
 	unlimited: number;
+	unlimitedFinished: number;
+	unlimitedWon: number;
+	unlimitedSkipped: number;
 };
 
 const token = process.env.CLOUDFLARE_STATS_TOKEN ?? '';
@@ -35,7 +46,8 @@ SELECT
 	blob3 AS mode,
 	sum(if(blob1 = 'start', _sample_interval, 0)) AS started,
 	sum(if(blob1 = 'win', _sample_interval, 0)) AS won,
-	sum(if(blob1 = 'loss', _sample_interval, 0)) AS lost
+	sum(if(blob1 = 'loss', _sample_interval, 0)) AS lost,
+	sum(if(blob1 = 'skip', _sample_interval, 0)) AS skipped
 FROM secle_games
 WHERE timestamp > NOW() - INTERVAL '${days}' DAY
 GROUP BY day, kind, mode
@@ -57,12 +69,24 @@ const byDay = new Map<string, Day>();
 for (const r of rows) {
 	let d = byDay.get(r.day);
 	if (!d) {
-		d = { term: 0, acronym: 0, finished: 0, won: 0, unlimited: 0 };
+		d = {
+			term: 0,
+			acronym: 0,
+			finished: 0,
+			won: 0,
+			unlimited: 0,
+			unlimitedFinished: 0,
+			unlimitedWon: 0,
+			unlimitedSkipped: 0
+		};
 		byDay.set(r.day, d);
 	}
 	const started = Number(r.started);
 	if (r.kind === 'unlimited') {
 		d.unlimited += started;
+		d.unlimitedFinished += Number(r.won) + Number(r.lost);
+		d.unlimitedWon += Number(r.won);
+		d.unlimitedSkipped += Number(r.skipped);
 		continue;
 	}
 	if (r.mode === 'acronym') d.acronym += started;
@@ -76,11 +100,32 @@ if (byDay.size === 0) {
 	process.exit(0);
 }
 
-const header = ['Day', 'Daily term', 'Daily acronym', 'Finished', 'Won', 'Unlimited'];
+const header = [
+	'Day',
+	'Daily term',
+	'Daily acronym',
+	'Finished',
+	'Won',
+	'Unlimited',
+	'U finished',
+	'U won',
+	'U skipped'
+];
 const table = [header];
 for (const day of [...byDay.keys()].sort().reverse()) {
 	const d = byDay.get(day)!;
-	table.push([day, d.term, d.acronym, d.finished, d.won, d.unlimited].map(String));
+	const row = [
+		day,
+		d.term,
+		d.acronym,
+		d.finished,
+		d.won,
+		d.unlimited,
+		d.unlimitedFinished,
+		d.unlimitedWon,
+		d.unlimitedSkipped
+	];
+	table.push(row.map(String));
 }
 
 const widths = header.map((_, i) => Math.max(...table.map((row) => row[i].length)));
@@ -88,3 +133,4 @@ for (const row of table) {
 	console.log(row.map((cell, i) => cell.padEnd(widths[i])).join('  '));
 }
 console.log('\nDaily columns count people who started that puzzle. Unlimited counts games.');
+console.log('Unlimited games not finished or skipped were abandoned (or the API was hit directly).');
