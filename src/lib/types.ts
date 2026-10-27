@@ -32,6 +32,9 @@ export type SkipResult = { answer: string; objective: string; hints: Hints };
 export type Guess = { text: string; colors: Color[] };
 export type Cell = { index: number; gap: boolean; more: boolean };
 export type Result = 'won' | 'lost' | 'skipped';
+export type Account = { username: string };
+export type NewAccount = { username: string; code: string };
+export type RecoveryCode = { code: string };
 export type HistoryEntry = {
 	termId: number;
 	day: number;

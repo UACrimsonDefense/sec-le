@@ -14,6 +14,13 @@ declare global {
 		// interface PageData {}
 		// interface PageState {}
 	}
+
+	namespace Cloudflare {
+		interface Env {
+			HASHER_KEY: string;
+			PEPPER: string;
+		}
+	}
 }
 
 export {};

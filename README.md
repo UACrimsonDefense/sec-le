@@ -38,6 +38,27 @@ echo 'DAILY_SEED=local' > .env.seed
 
 `pnpm dev` works without it.
 
+## Accounts
+
+Accounts are optional. The Worker keeps users and sessions in a D1 database (`secle-auth`) and sends password hashing to a separate Argon2id service run by Crimson Defense. That service never sees a real password and is only reachable from the Worker. What's stored is explained on the [privacy page](https://secle.crimsondefense.org/privacy).
+
+To work on accounts locally, create the local database and a `.dev.vars` file (ignored by git) with any values:
+
+```sh
+pnpm migrate
+printf 'HASHER_KEY=dev\nPEPPER=dev\n' > .dev.vars
+```
+
+`pnpm dev` runs entirely on your machine. The hashing service isn't reachable from there, so register and login return `503`. Everything else works.
+
+Usernames are checked against [`blocked.txt`](src/lib/server/auth/blocked.txt) (whole parts of the name) and [`blocked-anywhere.txt`](src/lib/server/auth/blocked-anywhere.txt) (anywhere in the name). If a bad name gets through, rename it. The player stays signed in and sees the new name:
+
+```sh
+pnpm exec wrangler d1 execute secle-auth --remote --command "UPDATE users SET username = 'player-' || id WHERE username = 'badname'"
+```
+
+To remove the account instead, use `DELETE FROM users WHERE username = 'badname'`.
+
 ## Player stats
 
 The API counts each puzzle started, won, lost or skipped in Workers Analytics Engine. It records only the event, daily or unlimited, mode, date, difficulty and guess count, never anything about the player. Data is kept for three months.
@@ -60,7 +81,7 @@ All terms live in [`data/terms.csv`](data/terms.csv). To fix or suggest one, ope
 
 ## Credits and disclaimers
 
-- Code is [MIT](LICENSE). The dictionary in `src/lib/server/words.txt` is from [SCOWL / ESDB](https://wordlist.aspell.net) by Kevin Atkinson, under its own license in [`scowl-license.txt`](src/lib/server/scowl-license.txt).
+- Code is [MIT](LICENSE). The dictionary in `src/lib/server/words.txt` is from [SCOWL / ESDB](https://wordlist.aspell.net) by Kevin Atkinson, under its own license in [`scowl-license.txt`](src/lib/server/scowl-license.txt). The username blocklist is adapted (trimmed and extended) from the [List of Dirty, Naughty, Obscene, and Otherwise Bad Words](https://github.com/LDNOOBW/List-of-Dirty-Naughty-Obscene-and-Otherwise-Bad-Words), [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
 - Term selection follows the CompTIA SY0-701 exam objectives (term names and objective numbers only, no CompTIA text is reproduced). Definitions and category names are original, written with the [NIST CSRC Glossary](https://csrc.nist.gov/glossary) as a reference (linked per term in `data/terms.csv`).
 - Crimson Defense is a registered student organization at the University of Alabama. Views and content are our own.
 - Not affiliated with or endorsed by CompTIA. CompTIA and Security+ are registered trademarks of CompTIA, Inc.

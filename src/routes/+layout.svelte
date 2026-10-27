@@ -2,6 +2,7 @@
 	import { page } from '$app/state';
 	import Help from '#lib/components/Help.svelte';
 	import Settings from '#lib/components/Settings.svelte';
+	import Account from '#lib/components/Account.svelte';
 	import type { LayoutProps } from './$types';
 
 	let { children }: LayoutProps = $props();
@@ -41,6 +42,7 @@
 	<Help />
 	<a href="/stats">Stats</a>
 	<Settings />
+	<Account />
 </header>
 
 {@render children()}
@@ -62,6 +64,7 @@
 		and Security+ are registered trademarks of CompTIA, Inc. Wordle is a trademark of The New York
 		Times Company.
 	</p>
+	<a class="privacy" href="/privacy">Privacy</a>
 	<a class="repo" href="https://github.com/UACrimsonDefense/sec-le" aria-label="Source on GitHub">
 		<svg viewBox="0 0 16 16" width="20" height="20" aria-hidden="true">
 			<path
@@ -150,7 +153,7 @@
 	footer {
 		position: relative;
 		margin-top: auto;
-		padding: 16px 48px;
+		padding: 16px 80px;
 		text-align: center;
 		font-size: 0.8rem;
 		color: var(--muted);
@@ -171,6 +174,16 @@
 		right: 16px;
 		bottom: 14px;
 		display: flex;
+	}
+	.privacy {
+		position: absolute;
+		left: 16px;
+		bottom: 16px;
+	}
+	@media (max-width: 480px) {
+		footer {
+			padding: 16px 16px 48px;
+		}
 	}
 	header {
 		display: flex;

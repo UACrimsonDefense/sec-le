@@ -1,0 +1,18 @@
+CREATE TABLE users (
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	username TEXT NOT NULL UNIQUE,
+	hash TEXT NOT NULL,
+	recovery TEXT NOT NULL,
+	failed INTEGER NOT NULL DEFAULT 0,
+	locked_until INTEGER NOT NULL DEFAULT 0,
+	created INTEGER NOT NULL
+);
+
+CREATE TABLE sessions (
+	id TEXT PRIMARY KEY,
+	user_id INTEGER NOT NULL REFERENCES users (id) ON DELETE CASCADE,
+	expires INTEGER NOT NULL,
+	created INTEGER NOT NULL
+);
+
+CREATE INDEX sessions_user_id ON sessions (user_id);

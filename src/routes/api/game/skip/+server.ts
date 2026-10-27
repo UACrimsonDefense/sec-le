@@ -6,7 +6,9 @@ import type { SkipBody, SkipResult } from '#lib/types.js';
 export const prerender = false;
 
 export async function POST({ request }) {
-	if (Number(request.headers.get('content-length')) > 100) error(413, 'Too large');
+	const size = Number(request.headers.get('content-length'));
+	if (Number.isNaN(size) || size === 0) error(411, 'Length required');
+	if (size > 100) error(413, 'Too large');
 
 	const body = (await request.json().catch(() => null)) as Partial<SkipBody> | null;
 	const termId = body?.termId;

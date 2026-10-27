@@ -133,4 +133,6 @@ for (const row of table) {
 	console.log(row.map((cell, i) => cell.padEnd(widths[i])).join('  '));
 }
 console.log('\nDaily columns count people who started that puzzle. Unlimited counts games.');
-console.log('Unlimited games not finished or skipped were abandoned (or the API was hit directly).');
+console.log(
+	'Unlimited games not finished or skipped were abandoned (or the API was hit directly).'
+);

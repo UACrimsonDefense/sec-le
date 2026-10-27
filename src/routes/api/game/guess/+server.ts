@@ -17,7 +17,9 @@ import type { GuessBody, GuessResult } from '#lib/types.js';
 export const prerender = false;
 
 export async function POST({ request }) {
-	if (Number(request.headers.get('content-length')) > 200) error(413, 'Too large');
+	const size = Number(request.headers.get('content-length'));
+	if (Number.isNaN(size) || size === 0) error(411, 'Length required');
+	if (size > 200) error(413, 'Too large');
 
 	const body = (await request.json().catch(() => null)) as Partial<GuessBody> | null;
 	const { termId, date, guess, guessNumber, difficulty, mode } = body ?? {};
