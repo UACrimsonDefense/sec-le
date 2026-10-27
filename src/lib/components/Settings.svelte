@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Modal from '#lib/components/Modal.svelte';
+	import { settingsChanged } from '#lib/account.svelte.js';
 
 	let open = $state(false);
 	let theme = $state('light');
@@ -16,6 +17,7 @@
 		try {
 			localStorage.setItem('theme', theme);
 		} catch {}
+		settingsChanged();
 	}
 
 	function changeColorblind() {
@@ -25,6 +27,7 @@
 			if (colorblind) localStorage.setItem('colorblind', 'on');
 			else localStorage.removeItem('colorblind');
 		} catch {}
+		settingsChanged();
 	}
 </script>
 

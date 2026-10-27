@@ -10,25 +10,21 @@ export type NewGame = {
 	shape: Shape;
 	maxGuesses: number;
 	hints: Hints;
+	token: string;
 };
-export type GuessBody = {
-	termId: number;
-	date: string;
-	guess: string;
-	guessNumber: number;
-	difficulty: Difficulty;
-	mode: Mode;
-};
+export type GuessBody = { token: string; guess: string };
 export type GuessResult = {
 	colors: Color[];
 	solved: boolean;
+	token: string;
 	termId: number | null;
 	answer: string | null;
 	objective: string | null;
 	hints: Hints;
+	entry: HistoryEntry | null;
 };
-export type SkipBody = { termId: number };
-export type SkipResult = { answer: string; objective: string; hints: Hints };
+export type SkipBody = { token: string };
+export type SkipResult = { answer: string; objective: string; hints: Hints; entry: HistoryEntry };
 export type Guess = { text: string; colors: Color[] };
 export type Cell = { index: number; gap: boolean; more: boolean };
 export type Result = 'won' | 'lost' | 'skipped';
@@ -44,4 +40,16 @@ export type HistoryEntry = {
 	result: Result;
 	guesses: number;
 	date: string;
+	game?: string;
+};
+export type SyncedSettings = {
+	difficulty: Difficulty | '';
+	theme: string;
+	colorblind: boolean;
+	updated: number;
+};
+export type SyncData = {
+	username: string;
+	history: HistoryEntry[];
+	settings: SyncedSettings | null;
 };

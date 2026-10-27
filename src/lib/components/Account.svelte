@@ -2,7 +2,7 @@
 	import { onMount } from 'svelte';
 	import Modal from '#lib/components/Modal.svelte';
 	import RecoveryCode from '#lib/components/RecoveryCode.svelte';
-	import { account, checkAccount, signIn, post } from '#lib/account.svelte.js';
+	import { account, checkAccount, syncAccount, signIn, post } from '#lib/account.svelte.js';
 	import type { Account, NewAccount, RecoveryCode as Code } from '#lib/types.js';
 
 	type View = 'login' | 'register' | 'recover' | 'code';
@@ -56,6 +56,7 @@
 		}
 		signIn((reply.data as Account).username);
 		close();
+		syncAccount();
 	}
 
 	async function register() {
@@ -68,6 +69,7 @@
 		signIn(data.username);
 		newCode = data.code;
 		view = 'code';
+		syncAccount();
 	}
 
 	async function recover() {

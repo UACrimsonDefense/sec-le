@@ -9,6 +9,7 @@ import {
 } from '#lib/server/terms.js';
 import { isAllowedDate, dailyTerm, dayNumber } from '#lib/server/daily.js';
 import { track } from '#lib/server/stats.js';
+import { makeToken, newGameId } from '#lib/server/game.js';
 import type { Term } from '#lib/server/terms.js';
 import type { Mode, Difficulty, NewGame } from '#lib/types.js';
 
@@ -18,17 +19,34 @@ function pick(pool: Term[]): Term {
 	return pool[Math.floor(Math.random() * pool.length)];
 }
 
-function game(t: Term, termId: number, day: number, mode: Mode, difficulty: Difficulty): NewGame {
+async function game(
+	t: Term,
+	termId: number,
+	date: string,
+	mode: Mode,
+	difficulty: Difficulty
+): Promise<NewGame> {
+	let day = 0;
+	if (date !== '') day = dayNumber(date);
+	const token = await makeToken({
+		termId,
+		date,
+		mode,
+		difficulty,
+		guesses: 0,
+		game: newGameId()
+	});
 	return {
-		termId: termId,
-		day: day,
+		termId,
+		day,
 		shape: getShape(t.term),
 		maxGuesses: maxGuesses(t.term),
-		hints: unlockedHints(t, mode, difficulty, 0, false)
+		hints: unlockedHints(t, mode, difficulty, 0, false),
+		token
 	};
 }
 
-export function GET({ url }) {
+export async function GET({ url }) {
 	const mode = url.searchParams.get('mode');
 	const difficulty = url.searchParams.get('difficulty');
 	const date = url.searchParams.get('date');
@@ -48,7 +66,7 @@ export function GET({ url }) {
 		const t = dailyTerm(date, mode);
 		if (!t) error(404, 'No puzzle today');
 		track('start', 'daily', mode, date, difficulty, 0);
-		return json(game(t, 0, dayNumber(date), mode, difficulty));
+		return json(await game(t, 0, date, mode, difficulty));
 	}
 
 	const pool: Term[] = [];
@@ -63,5 +81,5 @@ export function GET({ url }) {
 		t = pick(pool);
 	}
 	track('start', 'unlimited', mode, '', difficulty, 0);
-	return json(game(t, t.id, 0, mode, difficulty));
+	return json(await game(t, t.id, '', mode, difficulty));
 }

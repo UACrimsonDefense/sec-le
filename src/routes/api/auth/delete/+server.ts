@@ -3,6 +3,7 @@ import { env } from 'cloudflare:workers';
 import { readBody, confirmPassword } from '#lib/server/auth/request.js';
 import { isPassword } from '#lib/server/auth/password.js';
 import { endAllSessions } from '#lib/server/auth/session.js';
+import { deleteGameData } from '#lib/server/history.js';
 
 export const prerender = false;
 
@@ -12,6 +13,7 @@ export async function POST({ request, cookies, getClientAddress }) {
 	if (!isPassword(password)) error(400, 'Bad request');
 
 	const user = await confirmPassword(cookies, getClientAddress(), password, 'Wrong password');
+	await deleteGameData(user.id);
 	await endAllSessions(cookies, user.id);
 	await env.AUTH.prepare('DELETE FROM users WHERE id = ?').bind(user.id).run();
 	console.log(JSON.stringify({ auth: 'deleted', user: user.id }));

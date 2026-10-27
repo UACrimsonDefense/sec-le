@@ -22,7 +22,7 @@
 			difficulty, result and number of guesses.
 		</li>
 		<li>Your daily puzzle boards and your current unlimited game.</li>
-		<li>Your settings: difficulty, theme and colorblind mode.</li>
+		<li>Your settings: difficulty, theme and colorblind mode, and when you last changed them.</li>
 		<li>Your username while you're signed in, to show it in the header.</li>
 	</ul>
 
@@ -75,11 +75,11 @@
 			slow down anyone guessing your password.
 		</li>
 		<li>
-			Your game history, with the same details as in your browser. Each game is saved when it ends,
-			and the first time you sign in on a device, history from that browser is added to your
-			account. It's kept until you delete your account.
+			Your game history, with the same details as in your browser. Each game is saved when it ends.
+			When you sign in, games already in that browser are added too, including ones played before
+			you had an account. It's kept until you delete your account.
 		</li>
-		<li>Your settings: difficulty, theme and colorblind mode.</li>
+		<li>Your settings: difficulty, theme and colorblind mode, and when you last changed them.</li>
 	</ul>
 	<p>
 		Your IP address is used to limit how fast anyone can sign in, register, recover an account or

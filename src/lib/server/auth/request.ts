@@ -21,6 +21,7 @@ export async function allowed(limiter: RateLimit, key: string): Promise<boolean>
 		const result = await limiter.limit({ key });
 		return result.success;
 	} catch {
+		console.error(JSON.stringify({ auth: 'ratelimit_error' }));
 		return true;
 	}
 }

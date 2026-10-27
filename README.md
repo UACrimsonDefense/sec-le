@@ -40,7 +40,7 @@ echo 'DAILY_SEED=local' > .env.seed
 
 ## Accounts
 
-Accounts are optional. The Worker keeps users and sessions in a D1 database (`secle-auth`) and sends password hashing to a separate Argon2id service run by Crimson Defense. That service never sees a real password and is only reachable from the Worker. What's stored is explained on the [privacy page](https://secle.crimsondefense.org/privacy).
+Accounts are optional. The Worker keeps users and sessions in one D1 database (`secle-auth`), signed-in players' history and settings in another (`secle-game`), and sends password hashing to a separate Argon2id service run by Crimson Defense. That service never sees a real password and is only reachable from the Worker. What's stored is explained on the [privacy page](https://secle.crimsondefense.org/privacy).
 
 To work on accounts locally, create the local database and a `.dev.vars` file (ignored by git) with any values:
 
@@ -57,7 +57,7 @@ Usernames are checked against [`blocked.txt`](src/lib/server/auth/blocked.txt) (
 pnpm exec wrangler d1 execute secle-auth --remote --command "UPDATE users SET username = 'player-' || id WHERE username = 'badname'"
 ```
 
-To remove the account instead, use `DELETE FROM users WHERE username = 'badname'`.
+To remove the account instead, delete its game data first with `pnpm exec wrangler d1 execute secle-game --remote --command "DELETE FROM history WHERE user_id = <id>; DELETE FROM settings WHERE user_id = <id>"`, then `DELETE FROM users WHERE username = 'badname'` in `secle-auth`.
 
 ## Player stats
 

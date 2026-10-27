@@ -17,7 +17,7 @@
 		"format": "prettier --write .",
 		"gen": "CLOUDFLARE_INCLUDE_PROCESS_ENV=false wrangler types --env-file=/dev/null",
 		"stats": "node --env-file-if-exists=.env.stats scripts/stats.ts",
-		"migrate": "wrangler d1 migrations apply secle-auth --local"
+		"migrate": "wrangler d1 migrations apply secle-auth --local && wrangler d1 migrations apply secle-game --local"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-cloudflare": "^8.0.0",

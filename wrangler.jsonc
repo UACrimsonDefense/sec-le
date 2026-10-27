@@ -16,6 +16,12 @@
 			"database_name": "secle-auth",
 			"database_id": "7f900660-1cee-44d8-a511-d0bb63cfc454",
 			"migrations_dir": "migrations/auth"
+		},
+		{
+			"binding": "GAME",
+			"database_name": "secle-game",
+			"database_id": "c89dd52f-189f-471e-ba61-8b773131af26",
+			"migrations_dir": "migrations/game"
 		}
 	],
 	"vpc_services": [{ "binding": "HASHER", "service_id": "01a166fa-2378-72b1-88c7-27d06129b8a1" }],

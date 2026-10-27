@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { account } from '#lib/account.svelte.js';
 	import type { HistoryEntry, Mode } from '#lib/types.js';
 	import type { PageProps } from './$types';
 
@@ -156,12 +157,20 @@
 		return Math.round((time - launch) / DAY_MS) + 1;
 	}
 
-	onMount(() => {
-		today = dayNumber(localDate());
+	function loadHistory() {
 		try {
 			const text = localStorage.getItem('history');
 			if (text) history = JSON.parse(text) as HistoryEntry[];
 		} catch {}
+	}
+
+	$effect(() => {
+		if (account.synced > 0) loadHistory();
+	});
+
+	onMount(() => {
+		today = dayNumber(localDate());
+		loadHistory();
 	});
 </script>
 

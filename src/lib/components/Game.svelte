@@ -19,6 +19,7 @@
 	import HintPanel from '#lib/components/HintPanel.svelte';
 	import Modal from '#lib/components/Modal.svelte';
 	import { SHAKE_MS, revealMs, winMs, reducedMotion } from '#lib/motion.js';
+	import { settingsChanged } from '#lib/account.svelte.js';
 
 	type Props = { mode: Mode; daily: boolean };
 	type Status = 'loading' | 'playing' | Result;
@@ -35,6 +36,7 @@
 		guesses: Guess[];
 		status: Status;
 		answer: string;
+		token: string;
 	};
 
 	let { mode, daily }: Props = $props();
@@ -56,6 +58,7 @@
 
 	let saveKey = '';
 	let date = '';
+	let token = '';
 	let termId = $state(0);
 	let day = $state(0);
 	let shape = $state<Shape>([]);
@@ -187,7 +190,8 @@
 			hints,
 			guesses,
 			status,
-			answer
+			answer,
+			token
 		};
 		try {
 			localStorage.setItem(saveKey, JSON.stringify(game));
@@ -199,6 +203,8 @@
 			const text = localStorage.getItem(saveKey);
 			if (!text) return false;
 			const game = JSON.parse(text) as SavedGame;
+			if (game.status === 'playing' && !game.token) return false;
+			token = game.token ?? '';
 			termId = game.termId;
 			day = game.day ?? 0;
 			shape = game.shape;
@@ -233,6 +239,7 @@
 		try {
 			localStorage.setItem('difficulty', preferred);
 		} catch {}
+		settingsChanged();
 	}
 
 	function choose(value: Difficulty) {
@@ -254,17 +261,8 @@
 		replaceState(url, {});
 	}
 
-	function record(objective: string) {
-		const entry: HistoryEntry = {
-			termId,
-			day,
-			mode,
-			objective,
-			difficulty,
-			result: status as Result,
-			guesses: guesses.length,
-			date: new Date().toISOString()
-		};
+	function record(entry: HistoryEntry | null) {
+		if (!entry) return;
 		try {
 			let history: HistoryEntry[] = [];
 			const text = localStorage.getItem('history');
@@ -275,6 +273,7 @@
 	}
 
 	async function start() {
+		loadPreferred();
 		let url = `/api/game/new?mode=${mode}&difficulty=${preferred}`;
 		if (daily) url += `&date=${date}`;
 		if (!daily && domain !== '') url += `&domain=${domain}`;
@@ -290,6 +289,7 @@
 		const g = (await res.json()) as NewGame;
 		termId = g.termId;
 		day = g.day;
+		token = g.token;
 		shape = g.shape;
 		max = g.maxGuesses;
 		difficulty = preferred;
@@ -326,14 +326,7 @@
 		waiting = true;
 		const res = await fetch('/api/game/guess', {
 			method: 'POST',
-			body: JSON.stringify({
-				termId,
-				date: daily ? date : '',
-				guess: current,
-				guessNumber: guesses.length + 1,
-				difficulty,
-				mode
-			})
+			body: JSON.stringify({ token, guess: current })
 		});
 		waiting = false;
 		if (res.status === 422) {
@@ -345,6 +338,7 @@
 
 		const r = (await res.json()) as GuessResult;
 		guesses.push({ text: current, colors: r.colors });
+		token = r.token;
 		current = '';
 		hints = r.hints;
 		reveal = guesses.length - 1;
@@ -356,7 +350,7 @@
 			if (r.solved) status = 'won';
 			else status = 'lost';
 			later(() => (showResult = true), r.solved ? winMs(total) : revealMs(total));
-			record(r.objective ?? '');
+			record(r.entry);
 		}
 		save();
 	}
@@ -364,7 +358,7 @@
 	async function skip() {
 		if (waiting) return;
 		waiting = true;
-		const res = await fetch('/api/game/skip', { method: 'POST', body: JSON.stringify({ termId }) });
+		const res = await fetch('/api/game/skip', { method: 'POST', body: JSON.stringify({ token }) });
 		waiting = false;
 		if (!res.ok) return;
 		const r = (await res.json()) as SkipResult;
@@ -372,7 +366,7 @@
 		hints = r.hints;
 		status = 'skipped';
 		showResult = true;
-		record(r.objective);
+		record(r.entry);
 		save();
 	}
 
