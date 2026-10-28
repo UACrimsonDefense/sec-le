@@ -51,10 +51,13 @@
 	<div class="start">
 		<Archive {mode} launch={data.launch} />
 	</div>
-	<Help />
-	<a href="/stats">Stats</a>
-	<Settings />
-	<Account />
+	<a class="logo" href="/"><img src="/favicon.svg" alt="Sec+le home" width="40" height="40" /></a>
+	<div class="end">
+		<Help />
+		<a href="/stats">Stats</a>
+		<Settings />
+		<Account />
+	</div>
 </header>
 
 {@render children()}
@@ -198,8 +201,9 @@
 		}
 	}
 	header {
-		display: flex;
-		justify-content: flex-end;
+		display: grid;
+		grid-template-columns: 1fr auto 1fr;
+		grid-template-areas: 'start logo end';
 		align-items: center;
 		gap: 16px;
 		padding: 12px 16px 0;
@@ -208,6 +212,29 @@
 		color: var(--text);
 	}
 	.start {
-		margin-right: auto;
+		grid-area: start;
+	}
+	.end {
+		grid-area: end;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		gap: 16px;
+	}
+	header .logo {
+		grid-area: logo;
+		display: flex;
+	}
+	@media (max-width: 600px) {
+		header {
+			grid-template-columns: auto 1fr;
+			grid-template-areas:
+				'logo logo'
+				'start end';
+			row-gap: 8px;
+		}
+		header .logo {
+			justify-self: center;
+		}
 	}
 </style>
