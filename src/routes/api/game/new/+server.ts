@@ -7,8 +7,8 @@ import {
 	isDifficulty,
 	unlockedHints
 } from '#lib/server/terms.js';
-import { isAllowedDate, dailyTerm, dayNumber } from '#lib/server/daily.js';
-import { track } from '#lib/server/stats.js';
+import { isAllowedDate, isArchiveDate, dailyTerm, dayNumber } from '#lib/server/daily.js';
+import { track, type Kind } from '#lib/server/stats.js';
 import { makeToken, newGameId } from '#lib/server/game.js';
 import type { Term } from '#lib/server/terms.js';
 import type { Mode, Difficulty, NewGame } from '#lib/types.js';
@@ -65,7 +65,9 @@ export async function GET({ url }) {
 		if (!isAllowedDate(date)) error(400, 'Bad date');
 		const t = dailyTerm(date, mode);
 		if (!t) error(404, 'No puzzle today');
-		track('start', 'daily', mode, date, difficulty, 0);
+		let kind: Kind = 'daily';
+		if (isArchiveDate(date)) kind = 'archive';
+		track('start', kind, mode, date, difficulty, 0);
 		return json(await game(t, 0, date, mode, difficulty));
 	}
 

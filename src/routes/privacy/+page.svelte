@@ -46,10 +46,10 @@
 	<h2>When you play</h2>
 	<p>
 		Each guess is sent to our server to be scored. Guesses aren't saved. To see how many people
-		play, we also count each game started, won, lost or skipped: whether it was daily or unlimited,
-		the mode, date, difficulty and number of guesses, with nothing that identifies you. These
-		site-wide counts are kept for three months. They aren't your history, which you keep for as long
-		as you want.
+		play, we also count each game started, won, lost or skipped: whether it was daily, archive or
+		unlimited, the mode, date, difficulty and number of guesses, with nothing that identifies you.
+		These site-wide counts are kept for three months. They aren't your history, which you keep for
+		as long as you want.
 	</p>
 	<p>
 		Cloudflare handles every request to the site and sees your IP address to deliver it and block

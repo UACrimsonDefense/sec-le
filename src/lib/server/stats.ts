@@ -1,7 +1,7 @@
 import { env } from 'cloudflare:workers';
 
 export type Event = 'start' | 'win' | 'loss' | 'skip';
-export type Kind = 'daily' | 'unlimited';
+export type Kind = 'daily' | 'unlimited' | 'archive';
 
 export function track(
 	event: Event,

@@ -75,10 +75,19 @@
 		return result;
 	}
 
+	function onPuzzleDay(e: HistoryEntry): boolean {
+		const puzzle = Date.parse(data.launch + 'T00:00:00Z') + (e.day - 1) * DAY_MS;
+		const finished = new Date(e.date);
+		const month = String(finished.getMonth() + 1).padStart(2, '0');
+		const dayOfMonth = String(finished.getDate()).padStart(2, '0');
+		const local = Date.parse(`${finished.getFullYear()}-${month}-${dayOfMonth}T00:00:00Z`);
+		return Math.abs(local - puzzle) <= DAY_MS;
+	}
+
 	function dailyWins(list: HistoryEntry[], mode: Mode | 'all'): Set<number> {
 		const result = new Set<number>();
 		for (const e of list) {
-			if (e.day === 0 || e.result !== 'won') continue;
+			if (e.day === 0 || e.result !== 'won' || !onPuzzleDay(e)) continue;
 			if (mode !== 'all' && e.mode !== mode) continue;
 			result.add(e.day);
 		}

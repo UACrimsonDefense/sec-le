@@ -2,7 +2,8 @@ import { json, error } from '@sveltejs/kit';
 import { letters, maxGuesses, unlockedHints } from '#lib/server/terms.js';
 import { score } from '#lib/server/score.js';
 import { isValidGuess } from '#lib/server/dictionary.js';
-import { track } from '#lib/server/stats.js';
+import { isArchiveDate } from '#lib/server/daily.js';
+import { track, type Kind } from '#lib/server/stats.js';
 import { readToken, makeToken, gameTerm, historyEntry, saveForUser } from '#lib/server/game.js';
 import type { GuessBody, GuessResult, HistoryEntry } from '#lib/types.js';
 
@@ -36,7 +37,9 @@ export async function POST({ request, cookies }) {
 	let token = '';
 	let entry: HistoryEntry | null = null;
 	if (over) {
-		const kind = state.date === '' ? 'unlimited' : 'daily';
+		let kind: Kind = 'daily';
+		if (state.date === '') kind = 'unlimited';
+		else if (isArchiveDate(state.date)) kind = 'archive';
 		track(solved ? 'win' : 'loss', kind, state.mode, state.date, state.difficulty, guessNumber);
 		entry = historyEntry(t, state, solved ? 'won' : 'lost', guessNumber);
 		await saveForUser(cookies, entry);

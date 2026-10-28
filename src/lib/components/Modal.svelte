@@ -2,8 +2,8 @@
 	import { onMount } from 'svelte';
 	import type { Snippet } from 'svelte';
 
-	type Props = { title: string; onclose?: () => void; children: Snippet };
-	let { title, onclose, children }: Props = $props();
+	type Props = { title: string; onclose?: () => void; wide?: boolean; children: Snippet };
+	let { title, onclose, wide = false, children }: Props = $props();
 
 	const id = $props.id();
 	let dialog: HTMLDialogElement;
@@ -22,7 +22,7 @@
 	}
 </script>
 
-<dialog bind:this={dialog} aria-labelledby={id} {oncancel}>
+<dialog bind:this={dialog} aria-labelledby={id} class:wide {oncancel}>
 	<h2 {id}>{title}</h2>
 	{@render children()}
 	{#if onclose}
@@ -41,6 +41,9 @@
 		background: var(--bg);
 		color: var(--text);
 		text-align: center;
+	}
+	dialog.wide {
+		max-width: 720px;
 	}
 	dialog::backdrop {
 		background: rgba(0, 0, 0, 0.5);

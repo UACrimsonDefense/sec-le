@@ -18,6 +18,9 @@ type Day = {
 	unlimitedFinished: number;
 	unlimitedWon: number;
 	unlimitedSkipped: number;
+	archive: number;
+	archiveFinished: number;
+	archiveWon: number;
 };
 
 const token = process.env.CLOUDFLARE_STATS_TOKEN ?? '';
@@ -77,7 +80,10 @@ for (const r of rows) {
 			unlimited: 0,
 			unlimitedFinished: 0,
 			unlimitedWon: 0,
-			unlimitedSkipped: 0
+			unlimitedSkipped: 0,
+			archive: 0,
+			archiveFinished: 0,
+			archiveWon: 0
 		};
 		byDay.set(r.day, d);
 	}
@@ -87,6 +93,12 @@ for (const r of rows) {
 		d.unlimitedFinished += Number(r.won) + Number(r.lost);
 		d.unlimitedWon += Number(r.won);
 		d.unlimitedSkipped += Number(r.skipped);
+		continue;
+	}
+	if (r.kind === 'archive') {
+		d.archive += started;
+		d.archiveFinished += Number(r.won) + Number(r.lost);
+		d.archiveWon += Number(r.won);
 		continue;
 	}
 	if (r.mode === 'acronym') d.acronym += started;
@@ -109,7 +121,10 @@ const header = [
 	'Unlimited',
 	'U finished',
 	'U won',
-	'U skipped'
+	'U skipped',
+	'Archive',
+	'A finished',
+	'A won'
 ];
 const table = [header];
 for (const day of [...byDay.keys()].sort().reverse()) {
@@ -123,7 +138,10 @@ for (const day of [...byDay.keys()].sort().reverse()) {
 		d.unlimited,
 		d.unlimitedFinished,
 		d.unlimitedWon,
-		d.unlimitedSkipped
+		d.unlimitedSkipped,
+		d.archive,
+		d.archiveFinished,
+		d.archiveWon
 	];
 	table.push(row.map(String));
 }
@@ -132,7 +150,9 @@ const widths = header.map((_, i) => Math.max(...table.map((row) => row[i].length
 for (const row of table) {
 	console.log(row.map((cell, i) => cell.padEnd(widths[i])).join('  '));
 }
-console.log('\nDaily columns count people who started that puzzle. Unlimited counts games.');
+console.log(
+	'\nDaily columns count people who started that puzzle. Unlimited and Archive count games. Archive rows are grouped by puzzle date.'
+);
 console.log(
 	'Unlimited games not finished or skipped were abandoned (or the API was hit directly).'
 );

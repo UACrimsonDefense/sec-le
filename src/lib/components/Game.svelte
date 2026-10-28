@@ -21,7 +21,7 @@
 	import { SHAKE_MS, revealMs, winMs, reducedMotion } from '#lib/motion.js';
 	import { settingsChanged } from '#lib/account.svelte.js';
 
-	type Props = { mode: Mode; daily: boolean };
+	type Props = { mode: Mode; daily: boolean; launch?: string };
 	type Status = 'loading' | 'playing' | Result;
 	type Level = { value: Difficulty; name: string; about: string };
 	type Domain = { value: string; name: string };
@@ -39,7 +39,7 @@
 		token: string;
 	};
 
-	let { mode, daily }: Props = $props();
+	let { mode, daily, launch = '' }: Props = $props();
 
 	const REPO = 'https://github.com/UACrimsonDefense/sec-le';
 	const levels: Level[] = [
@@ -81,6 +81,7 @@
 	let reveal = $state(-1);
 	let shown = $state(0);
 	let shaking = $state(false);
+	let archive = $state(false);
 	let waiting = false;
 	let timers: ReturnType<typeof setTimeout>[] = [];
 	let shakeTimer: ReturnType<typeof setTimeout> | undefined;
@@ -106,7 +107,7 @@
 		const minutes = String(Math.floor((seconds % 3600) / 60)).padStart(2, '0');
 		return `${hours}:${minutes}:${String(seconds % 60).padStart(2, '0')}`;
 	}
-	let title = $derived(pageTitle(daily, mode));
+	let title = $derived(pageTitle(daily, mode, archive));
 	let total = $derived(countLetters(shape));
 	let keyColors = $derived(getKeyColors(guesses.slice(0, shown)));
 
@@ -158,9 +159,10 @@
 		return result;
 	}
 
-	function pageTitle(daily: boolean, mode: Mode): string {
+	function pageTitle(daily: boolean, mode: Mode, archive: boolean): string {
 		let name = 'Term';
 		if (mode === 'acronym') name = 'Acronym';
+		if (archive) return `Archive Security+ ${name} Puzzle · Sec+le`;
 		if (daily) return `Daily Security+ ${name} Puzzle · Sec+le`;
 		return `Unlimited Security+ ${name} Practice · Sec+le`;
 	}
@@ -415,7 +417,9 @@
 		if (status !== 'won') score = 'X';
 		let title = 'Sec+le';
 		if (mode === 'acronym') title += ' Acronym';
-		let text = `${title} #${day} · ${levelName(difficulty)} · ${score}/${max}\n`;
+		let heading = `${title} #${day}`;
+		if (archive) heading += ' (archive)';
+		let text = `${heading} · ${levelName(difficulty)} · ${score}/${max}\n`;
 		for (const guess of guesses) {
 			text += '\n' + emojiRow(guess);
 		}
@@ -464,6 +468,11 @@
 	onMount(() => {
 		date = localDate();
 		if (daily) {
+			const param = new URL(window.location.href).searchParams.get('date');
+			if (param && /^\d{4}-\d{2}-\d{2}$/.test(param) && param >= launch && param < date) {
+				date = param;
+				archive = true;
+			}
 			saveKey = `daily-${mode}-${date}`;
 		} else {
 			saveKey = `play-${mode}-current`;
@@ -486,7 +495,9 @@
 	{#if daily}
 		<button class="play-again" onclick={share}>{copied ? 'Copied!' : 'Share'}</button>
 		<a class="button" href="/play/{mode}">Play unlimited</a>
-		{#if left > 0}
+		{#if archive}
+			<p><a href="/daily/{mode}" data-sveltekit-reload>Back to today</a></p>
+		{:else if left > 0}
 			<p class="note" role="timer">Next puzzle in {countdown(left)}</p>
 		{:else}
 			<p><a href="/daily/{mode}" data-sveltekit-reload>Play today's puzzle</a></p>
@@ -501,8 +512,12 @@
 	<p class="tagline">A daily word game for CompTIA Security+ (SY0-701) terms</p>
 	<div class="navs">
 		<nav aria-label="Game type">
-			<a href="/daily/{mode}" class:current={daily} aria-current={daily ? 'page' : undefined}
-				>Daily{#if daily && day > 0}&nbsp;#{day}{/if}</a
+			<a
+				href="/daily/{mode}"
+				class:current={daily}
+				aria-current={daily ? 'page' : undefined}
+				data-sveltekit-reload={archive ? '' : undefined}
+				>Daily{#if daily && day > 0}&nbsp;#{day}{/if}{#if archive}&nbsp;(archive){/if}</a
 			>
 			<a href="/play/{mode}" class:current={!daily} aria-current={daily ? undefined : 'page'}
 				>Unlimited</a

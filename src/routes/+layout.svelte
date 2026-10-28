@@ -3,9 +3,18 @@
 	import Help from '#lib/components/Help.svelte';
 	import Settings from '#lib/components/Settings.svelte';
 	import Account from '#lib/components/Account.svelte';
+	import Archive from '#lib/components/Archive.svelte';
+	import type { Mode } from '#lib/types.js';
 	import type { LayoutProps } from './$types';
 
-	let { children }: LayoutProps = $props();
+	let { children, data }: LayoutProps = $props();
+
+	let mode = $derived(currentMode(page.params.mode));
+
+	function currentMode(param: string | undefined): Mode {
+		if (param === 'acronym') return 'acronym';
+		return 'term';
+	}
 
 	const SITE = 'https://secle.crimsondefense.org';
 	const description =
@@ -39,6 +48,9 @@
 </svelte:head>
 
 <header>
+	<div class="start">
+		<Archive {mode} launch={data.launch} />
+	</div>
 	<Help />
 	<a href="/stats">Stats</a>
 	<Settings />
@@ -194,5 +206,8 @@
 	}
 	header a {
 		color: var(--text);
+	}
+	.start {
+		margin-right: auto;
 	}
 </style>

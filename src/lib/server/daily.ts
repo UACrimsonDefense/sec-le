@@ -16,9 +16,13 @@ export function dayNumber(date: string): number {
 export function isAllowedDate(date: unknown): date is string {
 	if (typeof date !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
 	if (isNaN(toTime(date))) return false;
-	const yesterday = new Date(Date.now() - DAY_MS).toISOString().slice(0, 10);
 	const tomorrow = new Date(Date.now() + DAY_MS).toISOString().slice(0, 10);
-	return date >= schedule.launch && date >= yesterday && date <= tomorrow;
+	return date >= schedule.launch && date <= tomorrow;
+}
+
+export function isArchiveDate(date: string): boolean {
+	const yesterday = new Date(Date.now() - DAY_MS).toISOString().slice(0, 10);
+	return date < yesterday;
 }
 
 export function dailyTerm(date: string, mode: Mode): Term | undefined {
